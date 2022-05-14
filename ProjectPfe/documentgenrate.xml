@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Integrations>
+  <Integration>
+    <Nom>moheddine</Nom>
+    <Prenom> mosbeh </Prenom>
+    <Age>20</Age>
+    <Nationalite> algerien </Nationalite>
+  </Integration>
+  <Integration>
+    <Nom>baraket</Nom>
+    <Prenom> badreddine </Prenom>
+    <Age>70</Age>
+    <Nationalite> palestenien </Nationalite>
+  </Integration>
+</Integrations>
