@@ -3,6 +3,7 @@ using ConnexionMongo.Services;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver.Core.Configuration;
+using ProjectPfe.Models;
 using ProjectPfe.Services;
 using System.Data.SqlClient;
 using System.Xml.Linq;
@@ -17,8 +18,15 @@ namespace ProjectPfe.Controllers
 
 
         private readonly IntegrationService integrationService;
+        private readonly TitreService titreService;
+        private readonly ParagrapheService paragrapheService;
 
-        public IntegrationController(IntegrationService _integrationService) => integrationService = _integrationService;
+
+
+        public IntegrationController(IntegrationService _integrationService, TitreService _titreService, ParagrapheService _paragrapheService) { integrationService = _integrationService;
+            titreService = _titreService;
+            paragrapheService = _paragrapheService;
+                }
 
 
         [HttpGet(Name = "AllIntegrations")]
@@ -33,7 +41,7 @@ namespace ProjectPfe.Controllers
         [Route("AddIntegration")]
         public List<Integration> AddIntegration()
         {
-            XDocument coordinates = XDocument.Load(@"D:\test.xml");
+            XDocument coordinates = XDocument.Load(@"C:\Users\lulus\Documents\Stage\pfe\ProjectPfe\test.xml");
 
             List<Integration> integrations = new List<Integration>();
 
@@ -45,6 +53,29 @@ namespace ProjectPfe.Controllers
                 integration.Prenom = coordinate.Element("prenom").Value;
                 integration.Nationalite = coordinate.Element("nationalite").Value;
                 integration.Age = double.Parse(coordinate.Element("age").Value);
+                integration.Titres = new List<Titre>();
+                integration.Paragraphes = new List<Paragraphe>();
+
+                foreach (var titre in coordinate.Descendants("Titres"))
+                {
+                   Titre t=new Titre();
+                    t.libelle = titre.Element("Titre").Value;
+                    titreService.Create(t);
+                    integration.Titres.Add(t); 
+
+                }
+                  
+                foreach (var paragraphe in coordinate.Descendants("Paragraphes"))
+                {
+                    Paragraphe t = new  Paragraphe();
+                    t.libelle = paragraphe.Element("Paragraphe").Value;
+                    paragrapheService.Create(t);
+                    integration.Paragraphes.Add(t);
+
+                }
+
+
+
 
                 integrationService.Create(integration);
                 integrations.Add(integration);

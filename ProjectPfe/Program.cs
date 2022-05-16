@@ -28,6 +28,10 @@ builder.Services.Configure<DbPfeDatabaseSettings>(
 
 builder.Services.AddSingleton<IntegrationService>();
 builder.Services.AddSingleton<UserService>();
+builder.Services.AddSingleton<TitreService>();
+builder.Services.AddSingleton<ParagrapheService>();
+
+
 
 /*builder.Services.AddControllers()
     .AddJsonOptions(
