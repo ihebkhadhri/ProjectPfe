@@ -14,7 +14,7 @@ namespace ProjectPfe.Services
                 string userContent = templateContent.Replace("##Nom##", integration.Nom).Replace("##Nationalite##",integration.Nationalite)
                     .Replace("##prenom##", integration.Prenom).Replace("##Age##", integration.Age.ToString());
                 System.IO.File.WriteAllText(docFile, userContent);
-                ConvertPdf(docFile);
+                ConvertPdf(docFile); 
             }
              void ConvertPdf(string docFile)
             {

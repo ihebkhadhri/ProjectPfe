@@ -9,6 +9,7 @@
 
         public string IntegrationCollectionName { get; set; } = null!;
         public string UserCollectionName { get; set; } = null!;
+        public string CategorieCollectionName { get; set; } = null!;
     }
 }
 
