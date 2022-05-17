@@ -30,6 +30,7 @@ builder.Services.AddSingleton<IntegrationService>();
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<TitreService>();
 builder.Services.AddSingleton<ParagrapheService>();
+builder.Services.AddSingleton<CategorieService>();
 
 
 builder.Services.AddSingleton<TemplateWordService>();

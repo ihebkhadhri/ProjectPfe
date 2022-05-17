@@ -20,12 +20,14 @@ namespace ProjectPfe.Controllers
         private readonly IntegrationService integrationService;
         private readonly TitreService titreService;
         private readonly ParagrapheService paragrapheService;
+        private readonly TemplateWordService templateService;
 
 
 
-        public IntegrationController(IntegrationService _integrationService, TitreService _titreService, ParagrapheService _paragrapheService) { integrationService = _integrationService;
+        public IntegrationController(TemplateWordService _templateService, IntegrationService _integrationService, TitreService _titreService, ParagrapheService _paragrapheService) { integrationService = _integrationService;
             titreService = _titreService;
             paragrapheService = _paragrapheService;
+            templateService = _templateService;
                 }
 
 
@@ -39,9 +41,25 @@ namespace ProjectPfe.Controllers
 
         [HttpPost(Name = "AddIntegration")]
         [Route("AddIntegration")]
-        public Integration AddIntegration()
+        public Integration AddIntegration([FromForm] IFormFile file)
         {
-            XDocument coordinates = XDocument.Load(@"C:\Users\lulus\Documents\Stage\pfe\ProjectPfe\test.xml");
+            string uploads = Path.Combine(@"D:/", "Uploads");
+            //Create directory if it doesn't exist 
+            Directory.CreateDirectory(uploads);
+           
+                if (file.Length > 0)
+                {
+                    string filePath = Path.Combine(uploads, file.FileName);
+                    using (Stream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+                }
+            
+
+
+
+            XDocument coordinates = XDocument.Load(uploads+"/"+ file.FileName);
 
             List<Integration> integrations = new List<Integration>();
 
@@ -134,17 +152,31 @@ namespace ProjectPfe.Controllers
 
         [HttpPut(Name = "GetIntegration")]
         [Route("GetIntegration/{idIntegration}")]
-        public List<Integration> GetIntegrations(string idIntegration)
+        public Integration GetIntegration(string idIntegration)
         {
           Integration integration=  integrationService.Get( idIntegration);
-            
+
+           
+           
+            return integration;
+
+        }
+
+        [Route("EcrireTemplate/{idIntegration}/{idTemplateChoisi}")]
+        public Integration EcrireTemplate(String idIntegration, String idTemplateChoisi)
+        {
+            TemplateWord template = templateService.Get(idTemplateChoisi);
+
+            Integration integration = integrationService.Get(idIntegration);
             List<Integration> integrations = new List<Integration>();
             integrations.Add(integration);
             GenerateWord generateWord = new GenerateWord();
-            generateWord.GeneratWord(integrations);
-            return integrations;
-
+            generateWord.GeneratWord(integrations, template);
+            return integration;
         }
-        
+
     }
+
+
+    
 }

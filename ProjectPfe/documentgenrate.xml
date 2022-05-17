@@ -6,10 +6,4 @@
     <Age>20</Age>
     <Nationalite> algerien </Nationalite>
   </Integration>
-  <Integration>
-    <Nom>baraket</Nom>
-    <Prenom> badreddine </Prenom>
-    <Age>70</Age>
-    <Nationalite> palestenien </Nationalite>
-  </Integration>
 </Integrations>
