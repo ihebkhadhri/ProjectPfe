@@ -29,6 +29,11 @@ builder.Services.AddCors();
 builder.Services.AddSingleton<IntegrationService>();
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<CategorieService>();
+builder.Services.AddSingleton<TitreService>();
+builder.Services.AddSingleton<ParagrapheService>();
+
+
+builder.Services.AddSingleton<TemplateWordService>();
 
 
 /*builder.Services.AddControllers()
@@ -41,6 +46,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -63,6 +69,26 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000"));
+
+app.MapPost("/upload",
+    async Task<IResult> (HttpRequest request) =>
+    {
+        if (!request.HasFormContentType)
+            return Results.BadRequest();
+
+        var form = await request.ReadFormAsync();
+        var formFile = form.Files["file"];
+
+        if (formFile is null || formFile.Length == 0)
+            return Results.BadRequest();
+
+        await using var stream = formFile.OpenReadStream();
+
+        var reader = new StreamReader(stream);
+        var text = await reader.ReadToEndAsync();
+
+        return Results.Ok(text);
+    });
 app.Run();
 
 

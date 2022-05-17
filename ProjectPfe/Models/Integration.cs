@@ -1,5 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using ProjectPfe.Models;
+
 namespace ConnexionMongo.Models
 {
     public class Integration
@@ -11,5 +13,10 @@ namespace ConnexionMongo.Models
         public string? Prenom { get; set; }
         public double? Age { get; set; }
         public string? Nationalite { get; set; }
+
+         public List<Titre>Titres { get; set; }
+        public List<Tableau> Tableaux { get; set; }
+        public List<Paragraphe> Paragraphes { get; set; }
+
     }
 }
