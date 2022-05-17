@@ -31,7 +31,7 @@ namespace ProjectPfe.Controllers
 
         [HttpPost(Name = "AddIntegration")]
         [Route("AddIntegration")]
-        public List<Integration> AddIntegration()
+        public Integration AddIntegration()
         {
             XDocument coordinates = XDocument.Load(@"D:\test.xml");
 
@@ -48,15 +48,15 @@ namespace ProjectPfe.Controllers
 
                 integrationService.Create(integration);
                 integrations.Add(integration);
-
-
+                GenerateXml generateXml = new GenerateXml();
+                generateXml.generate(integrations);
+                return integration;
 
             }
 
-            GenerateXml generateXml = new GenerateXml();
-            generateXml.generate(integrations);
+            
 
-            return integrations;
+       
         }
 
 

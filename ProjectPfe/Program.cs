@@ -28,6 +28,7 @@ builder.Services.Configure<DbPfeDatabaseSettings>(
 
 builder.Services.AddSingleton<IntegrationService>();
 builder.Services.AddSingleton<UserService>();
+builder.Services.AddSingleton<TemplateWordService>();
 
 /*builder.Services.AddControllers()
     .AddJsonOptions(
@@ -39,6 +40,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -60,6 +62,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000"));
 
 app.Run();
 
