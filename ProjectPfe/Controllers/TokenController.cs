@@ -9,8 +9,9 @@ using System.Text;
 
 namespace JWTAuth.WebApi.Controllers
 {
-    [Route("api/token")]
-    [ApiController]
+      [ApiController]
+    [Route("[controller]")]
+
     public class TokenController : ControllerBase
     {
         public IConfiguration _configuration;
@@ -22,13 +23,12 @@ namespace JWTAuth.WebApi.Controllers
             _context = context;
         }
 
-        [HttpPost]
-        [Route("AddUser")]
-        public async Task<IActionResult> Post(UserInfo _userData)
+        [Route("GetUser/{Email}/{Password}")]
+        public async Task<IActionResult> Post(String Email, String Password )
         {
-            if (_userData != null && _userData.Email != null && _userData.Password != null)
+            if ( Email != null && Password != null)
             {
-                var user =  GetUser(_userData.Email, _userData.Password);
+                var user =  GetUser(Email, Password);
 
                 if (user != null)
                 {
