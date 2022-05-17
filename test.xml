@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<integrations>
+
+<integration nom="moheddine">
+<prenom> mosbeh </prenom>
+<nationalite> algerien </nationalite>
+<age> 20 </age>
+
+<Titres>
+<Titre>Page de garde</Titre>
+</Titres>
+<Paragraphes>
+<Paragraphe>
+
+jjfjcfdkfgfgnjf
+</Paragraphe>
+
+</Paragraphes>
+</integration>
+
+<integration nom="baraket">
+<prenom> badreddine </prenom>
+<nationalite> palestenien </nationalite>
+<age> 70 </age>
+
+<Titres>
+<Titre>Page de garde</Titre>
+</Titres>
+<Paragraphes>
+<Paragraphe>
+
+jjfjcfdkfgfgnjf
+</Paragraphe>
+
+</Paragraphes>
+</integration>
+
+</integrations>
