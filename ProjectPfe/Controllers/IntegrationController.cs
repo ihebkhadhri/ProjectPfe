@@ -134,15 +134,13 @@ namespace ProjectPfe.Controllers
 
         [HttpPut(Name = "GetIntegration")]
         [Route("GetIntegration/{idIntegration}")]
-        public List<Integration> GetIntegrations(string idIntegration)
+        public Integration GetIntegration(string idIntegration)
         {
           Integration integration=  integrationService.Get( idIntegration);
             
-            List<Integration> integrations = new List<Integration>();
-            integrations.Add(integration);
-            GenerateWord generateWord = new GenerateWord();
-            generateWord.GeneratWord(integrations);
-            return integrations;
+            
+         
+            return integration;
 
         }
 
