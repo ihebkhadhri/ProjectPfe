@@ -25,9 +25,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 //Conexion Database
 builder.Services.Configure<DbPfeDatabaseSettings>(
     builder.Configuration.GetSection("dbPfe"));
-
+builder.Services.AddCors();
 builder.Services.AddSingleton<IntegrationService>();
 builder.Services.AddSingleton<UserService>();
+builder.Services.AddSingleton<CategorieService>();
+
 
 /*builder.Services.AddControllers()
     .AddJsonOptions(
@@ -60,7 +62,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000"));
 app.Run();
 
 

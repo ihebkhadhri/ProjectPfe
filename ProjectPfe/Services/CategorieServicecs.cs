@@ -37,4 +37,4 @@ namespace ProjectPfe.Services
              _CategoriesCollection.DeleteOne(x => x.Id == id);
     }
 }
-}
+
