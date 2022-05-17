@@ -17,6 +17,7 @@
         public string Sous_TitreCollectionName { get; set; } = null!;
         public string ParagrapheCollectionName { get; set; } = null!;
         public string Sous_ParagrapheCollectionName { get; set; } = null!;
+        public string TemplateWordCollectionName { get; set; } = null!;
     }
 }
 
