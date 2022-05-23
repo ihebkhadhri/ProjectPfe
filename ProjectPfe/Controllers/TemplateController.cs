@@ -36,18 +36,7 @@ namespace ProjectPfe.Controllers
             templateWord.categorie = c;
             templateWordService.Create(templateWord);
 
-            TemplateWord templateWord2 = new TemplateWord();
-            templateWord2.Creation_Date = DateTime.Now;
-            templateWord2.Nom = "b";
-            templateWord2.categorie = c;
-            templateWordService.Create(templateWord2);
-
-            TemplateWord templateWord3 = new TemplateWord();
-            templateWord3.Creation_Date = DateTime.Now;
-            templateWord3.Nom = "c";
-            templateWord3.categorie = c;
-            templateWordService.Create(templateWord3);
-
+            
             return templateWordService.Get();
         }
     }
