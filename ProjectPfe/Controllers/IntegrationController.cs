@@ -41,7 +41,7 @@ namespace ProjectPfe.Controllers
 
         [HttpPost(Name = "AddIntegration")]
         [Route("AddIntegration")]
-        public Integration AddIntegration([FromForm] IFormFile file)
+        public String AddIntegration([FromForm] IFormFile file)
         {
             string uploads = Path.Combine(@"D:/", "Uploads");
             //Create directory if it doesn't exist 
@@ -73,11 +73,13 @@ namespace ProjectPfe.Controllers
                 integration.Age = double.Parse(coordinate.Element("age").Value);
                 integration.Titres = new List<Titre>();
                 integration.Paragraphes = new List<Paragraphe>();
+                integrationService.Create(integration);
 
-                foreach (var titre in coordinate.Descendants("Titres"))
+                foreach (var titre in coordinate.Descendants("Titre"))
                 {
                    Titre t=new Titre();
-                    t.libelle = titre.Element("Titre").Value;
+                    t.libelle = titre.Attribute("libelle").Value;
+                    t.integration = integration;
                     titreService.Create(t);
                     integration.Titres.Add(t); 
 
@@ -94,12 +96,12 @@ namespace ProjectPfe.Controllers
 
 
 
+                integrationService.Update(integration.Id, integration);
 
-                integrationService.Create(integration);
                 integrations.Add(integration);
                 GenerateXml generateXml = new GenerateXml();
                 generateXml.generate(integrations);
-                return integration;
+                return integration.Id;
 
             }
 
