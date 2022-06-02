@@ -3,6 +3,7 @@ using ConnexionMongo.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using ProjectPfe.Services;
+using ProjectPfe.Services.libs;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,6 +33,8 @@ builder.Services.AddSingleton<CategorieService>();
 builder.Services.AddSingleton<TitreService>();
 builder.Services.AddSingleton<ParagrapheService>();
 builder.Services.AddSingleton<CategorieService>();
+
+builder.Services.AddSingleton<GridFsStockTemplate>();
 
 
 builder.Services.AddSingleton<TemplateWordService>();

@@ -5,6 +5,7 @@ using MongoDB.Bson;
 using MongoDB.Driver.Core.Configuration;
 using ProjectPfe.Models;
 using ProjectPfe.Services;
+using ProjectPfe.Services.libs;
 using System.Data.SqlClient;
 using System.Xml.Linq;
 
@@ -21,10 +22,12 @@ namespace ProjectPfe.Controllers
         private readonly TitreService titreService;
         private readonly ParagrapheService paragrapheService;
         private readonly TemplateWordService templateService;
+        private readonly GridFsStockTemplate gridFsStockTemplate;
 
 
 
-        public IntegrationController(TemplateWordService _templateService, IntegrationService _integrationService, TitreService _titreService, ParagrapheService _paragrapheService) { integrationService = _integrationService;
+        public IntegrationController( GridFsStockTemplate _gridFsStockTemplate,TemplateWordService _templateService, IntegrationService _integrationService, TitreService _titreService, ParagrapheService _paragrapheService) { integrationService = _integrationService;
+            gridFsStockTemplate = _gridFsStockTemplate;
             titreService = _titreService;
             paragrapheService = _paragrapheService;
             templateService = _templateService;
@@ -164,6 +167,17 @@ namespace ProjectPfe.Controllers
 
         }
 
+
+        [HttpGet(Name = "GetFinalPdf")]
+        [Route("GetFinalPdf/{idIntegration}")]
+        public String GetFinalPdf(String  idIntegration)
+        {
+           
+            return gridFsStockTemplate.DownloadFileByName(idIntegration);
+
+        }
+
+
         [Route("EcrireTemplate/{idIntegration}/{idTemplateChoisi}")]
         public Integration EcrireTemplate(String idIntegration, String idTemplateChoisi)
         {
@@ -173,7 +187,7 @@ namespace ProjectPfe.Controllers
             List<Integration> integrations = new List<Integration>();
             integrations.Add(integration);
             GenerateWord generateWord = new GenerateWord();
-            generateWord.GeneratWord(integrations, template);
+            generateWord.GeneratWord(integrations, template, gridFsStockTemplate);
             return integration;
         }
 
