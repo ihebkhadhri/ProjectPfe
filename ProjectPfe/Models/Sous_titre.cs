@@ -10,6 +10,7 @@ namespace ProjectPfe.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         public String libelle { get; set; }
+        [BsonIgnore]
         public Titre titre { get; set; }
     }
 }
