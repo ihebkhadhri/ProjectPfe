@@ -18,19 +18,34 @@ namespace ProjectPfe.Controllers
     {
 
 
-        private readonly IntegrationService integrationService;
+        private  IntegrationService integrationService;
+        
         private readonly TitreService titreService;
+        private readonly SousTitreService soustitreservice;
         private readonly ParagrapheService paragrapheService;
+        private readonly SousParagrapheService sousparagrapheService;
+        private readonly TableauService tableauService;
+        private readonly LigneService ligneService;
+        private readonly ColonneService colonneService;
+
+
         private readonly TemplateWordService templateService;
         private readonly GridFsStockTemplate gridFsStockTemplate;
 
 
 
-        public IntegrationController( GridFsStockTemplate _gridFsStockTemplate,TemplateWordService _templateService, IntegrationService _integrationService, TitreService _titreService, ParagrapheService _paragrapheService) { integrationService = _integrationService;
+        public IntegrationController(GridFsStockTemplate _gridFsStockTemplate,TemplateWordService _templateService, IntegrationService _integrationService, TitreService _titreService, SousTitreService _sousTitreService, ParagrapheService _paragrapheService,SousParagrapheService _sousParagrapheService,TableauService _tableauService , LigneService _ligneService, ColonneService _colonneService) { integrationService = _integrationService;
             gridFsStockTemplate = _gridFsStockTemplate;
             titreService = _titreService;
             paragrapheService = _paragrapheService;
+            sousparagrapheService = _sousParagrapheService;
+            tableauService = _tableauService;
+            ligneService = _ligneService;
+            colonneService = _colonneService;
+
             templateService = _templateService;
+            soustitreservice = _sousTitreService;
+
                 }
 
 
@@ -76,27 +91,13 @@ namespace ProjectPfe.Controllers
                 integration.Age = double.Parse(coordinate.Element("age").Value);
                 integration.Titres = new List<Titre>();
                 integration.Paragraphes = new List<Paragraphe>();
+                integration.Tableaux = new List<Tableau>();
                 integrationService.Create(integration);
 
-                foreach (var titre in coordinate.Descendants("Titre"))
-                {
-                   Titre t=new Titre();
-                    t.libelle = titre.Attribute("libelle").Value;
-                    t.integration = integration;
-                    titreService.Create(t);
-                    integration.Titres.Add(t); 
+                ImportElement.AddTitreToIntegration(coordinate, integration, titreService, soustitreservice);
 
-                }
-                  
-                foreach (var paragraphe in coordinate.Descendants("Paragraphes"))
-                {
-                    Paragraphe t = new  Paragraphe();
-                    t.libelle = paragraphe.Element("Paragraphe").Value;
-                    paragrapheService.Create(t);
-                    integration.Paragraphes.Add(t);
-
-                }
-
+                ImportElement.AddParagrapheToIntegration(coordinate, integration, paragrapheService, sousparagrapheService);
+                ImportElement.AddTableToIntegration(coordinate, integration, tableauService, ligneService, colonneService);
 
 
                 integrationService.Update(integration.Id, integration);

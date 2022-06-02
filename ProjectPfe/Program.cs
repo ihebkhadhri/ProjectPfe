@@ -31,7 +31,13 @@ builder.Services.AddSingleton<IntegrationService>();
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<CategorieService>();
 builder.Services.AddSingleton<TitreService>();
+builder.Services.AddSingleton<SousTitreService>();
 builder.Services.AddSingleton<ParagrapheService>();
+builder.Services.AddSingleton<SousParagrapheService>();
+builder.Services.AddSingleton<TableauService>();
+builder.Services.AddSingleton<LigneService>();
+builder.Services.AddSingleton<ColonneService>();
+
 builder.Services.AddSingleton<CategorieService>();
 
 builder.Services.AddSingleton<GridFsStockTemplate>();
