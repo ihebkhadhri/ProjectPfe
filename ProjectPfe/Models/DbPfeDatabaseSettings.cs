@@ -18,6 +18,8 @@
         public string ParagrapheCollectionName { get; set; } = null!;
         public string Sous_ParagrapheCollectionName { get; set; } = null!;
         public string TemplateWordCollectionName { get; set; } = null!;
+        public string InputCollectionName { get; set; } = null!;
+        public string OutputCollectionName { get; set; } = null!;
     }
 }
 

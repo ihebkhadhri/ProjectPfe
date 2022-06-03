@@ -58,6 +58,18 @@ namespace ProjectPfe.Services.libs
 
         }
 
+
+        public ObjectId UploadFileXml(IFormFile file)
+        {
+
+            using (var stream = file.OpenReadStream())
+            {
+                return MongoUploadXmlFile("Input_" + file.FileName, stream);
+
+            }
+
+        }
+
         private  ObjectId MongoUpload(string filename, Stream stream)
         {
 
@@ -69,6 +81,23 @@ namespace ProjectPfe.Services.libs
                 }
             };
             var id =  bucket.UploadFromStream(filename, stream, options);
+            return id;
+            //if (id == null)
+            //    return false;
+            //else
+            //    return true;
+        }
+        private ObjectId MongoUploadXmlFile(string filename, Stream stream)
+        {
+
+            var options = new GridFSUploadOptions
+            {
+                Metadata = new BsonDocument
+                {
+                    {"ContentType","text/xml"}
+                }
+            };
+            var id = bucket.UploadFromStream(filename, stream, options);
             return id;
             //if (id == null)
             //    return false;
@@ -123,13 +152,10 @@ namespace ProjectPfe.Services.libs
         public ObjectId createRapport( String idOriginalRtf,Integration integration)
         {
 
-
-
            var file= bucket.OpenDownloadStream(new ObjectId(idOriginalRtf));
           
 
             StreamReader sr = new StreamReader(file, Encoding.Default);
-
 
             String lines = sr.ReadToEnd();
             byte[] bytes = Encoding.Default.GetBytes(lines);
@@ -149,7 +175,6 @@ namespace ProjectPfe.Services.libs
            
         }
 
-
         public  Stream GetFile(ObjectId id)
         {
             var file = _gridFs.FindOneById(id);
@@ -161,6 +186,12 @@ namespace ProjectPfe.Services.libs
             var fileInfo = _gridFs.Upload(fileStream, fileName);
             return (ObjectId)fileInfo.Id;
         }
+
+        public GridFSDownloadStream openfile(ObjectId Id)
+        {
+            return bucket.OpenDownloadStream(Id);
+        }
+
 
     }
 
