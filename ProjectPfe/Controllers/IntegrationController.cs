@@ -37,7 +37,7 @@ namespace ProjectPfe.Controllers
 
  
 
-        public IntegrationController(GridFsStockTemplate _gridFsStockTemplate,TemplateWordService _templateService, IntegrationService _integrationService, TitreService _titreService, SousTitreService _sousTitreService, ParagrapheService _paragrapheService,SousParagrapheService _sousParagrapheService,TableauService _tableauService , LigneService _ligneService, ColonneService _colonneService) { integrationService = _integrationService;
+        public IntegrationController(InputXmlService _inputXmlService, GridFsStockTemplate _gridFsStockTemplate,TemplateWordService _templateService, IntegrationService _integrationService, TitreService _titreService, SousTitreService _sousTitreService, ParagrapheService _paragrapheService,SousParagrapheService _sousParagrapheService,TableauService _tableauService , LigneService _ligneService, ColonneService _colonneService) { integrationService = _integrationService;
             gridFsStockTemplate = _gridFsStockTemplate;
             titreService = _titreService;
             paragrapheService = _paragrapheService;
@@ -48,6 +48,7 @@ namespace ProjectPfe.Controllers
 
             templateService = _templateService;
             soustitreservice = _sousTitreService;
+            inputXmlService = _inputXmlService;
 
                 }
 
@@ -68,8 +69,11 @@ namespace ProjectPfe.Controllers
             
 
                 var objectIdFile = gridFsStockTemplate.UploadFileXml(file);
-                Input input = new Input();
-                var doc = gridFsStockTemplate.openfile(objectIdFile);
+                    Input input = new Input();
+                    input.IdChunks = objectIdFile.ToString();
+                    input.Filename = file.FileName;
+                    inputXmlService.Create(input);
+            var doc = gridFsStockTemplate.openfile(objectIdFile);
 
                 StreamReader sr = new StreamReader(doc, Encoding.Default);
 
@@ -101,8 +105,8 @@ namespace ProjectPfe.Controllers
                     integrations.Add(integration);
                     GenerateXml generateXml = new GenerateXml();
                     generateXml.generate(integrations);
-
-                    return integration.Id;
+                    
+                return integration.Id;
                     
 
                 }

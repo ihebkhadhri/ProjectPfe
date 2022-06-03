@@ -45,7 +45,7 @@ builder.Services.AddSingleton<GridFsStockTemplate>();
 
 builder.Services.AddSingleton<TemplateWordService>();
 
-
+builder.Services.AddSingleton<InputXmlService>();
 /*builder.Services.AddControllers()
     .AddJsonOptions(
         options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
