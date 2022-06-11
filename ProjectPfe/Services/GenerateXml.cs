@@ -1,5 +1,6 @@
 ﻿using ConnexionMongo.Models;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace ProjectPfe.Services
 {
@@ -59,6 +60,28 @@ namespace ProjectPfe.Services
 
             parent.AppendChild(fils);
             fils.AppendChild(text);
+        }
+
+        //public string ToXML()
+        //{
+        //    using (var stringwriter = new System.IO.StringWriter())
+        //    {
+        //        var serializer = new XmlSerializer(this.GetType());
+        //        serializer.Serialize(stringwriter, this);
+        //        return stringwriter.ToString();
+        //    }
+        //}
+
+
+
+        //Output: Convertion Integration class to Xml string
+        public static Integration LoadFromXMLString(string xmlText)
+        {
+            using (var stringReader = new System.IO.StringReader(xmlText))
+            {
+                var serializer = new XmlSerializer(typeof(Integration));
+                return serializer.Deserialize(stringReader) as Integration;
+            }
         }
     }
 }
