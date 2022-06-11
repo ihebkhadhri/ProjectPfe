@@ -11,5 +11,11 @@ namespace ProjectPfe.Models
         public String DisplayName { get; set; }
         public String Username { get; set; }
         public String Password { get; set; }
+        public UserRole UserRole { get; set; }
+    }
+
+    public enum UserRole
+    {
+        Administrateur, Utilisateur,Particulier
     }
 }

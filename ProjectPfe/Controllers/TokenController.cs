@@ -52,7 +52,15 @@ namespace JWTAuth.WebApi.Controllers
                         expires: DateTime.UtcNow.AddMinutes(10),
                         signingCredentials: signIn);
 
-                    return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+
+                    UserInfo u=new UserInfo();
+                    u.UserName = Email;
+                    u.jwttoken = token.ToString();
+                    u.UserId = user.Id;
+                    u.Role = user.UserRole.ToString();
+
+
+                    return Ok(u);
                 }
                 else
                 {
