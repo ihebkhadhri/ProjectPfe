@@ -50,7 +50,6 @@ namespace ProjectPfe.Controllers
         public List<TemplateWord> AddTemplate([FromForm] IFormFile[] files)
         {
 
-
             Categorie c = categorieService.Get().FirstOrDefault();
 
             TemplateWord templateWord = new TemplateWord();

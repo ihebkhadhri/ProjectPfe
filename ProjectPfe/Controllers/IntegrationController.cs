@@ -6,8 +6,10 @@ using MongoDB.Driver.Core.Configuration;
 using ProjectPfe.Models;
 using ProjectPfe.Services;
 using ProjectPfe.Services.libs;
-using System.Data.SqlClient;
 using System.Xml.Linq;
+using System.Text;
+using MongoDB.Driver.GridFS;
+using System.Xml;
 
 namespace ProjectPfe.Controllers
 {
@@ -28,13 +30,14 @@ namespace ProjectPfe.Controllers
         private readonly LigneService ligneService;
         private readonly ColonneService colonneService;
 
-
+        
         private readonly TemplateWordService templateService;
         private readonly GridFsStockTemplate gridFsStockTemplate;
+        private readonly InputXmlService inputXmlService;
 
+ 
 
-
-        public IntegrationController(GridFsStockTemplate _gridFsStockTemplate,TemplateWordService _templateService, IntegrationService _integrationService, TitreService _titreService, SousTitreService _sousTitreService, ParagrapheService _paragrapheService,SousParagrapheService _sousParagrapheService,TableauService _tableauService , LigneService _ligneService, ColonneService _colonneService) { integrationService = _integrationService;
+        public IntegrationController(InputXmlService _inputXmlService, GridFsStockTemplate _gridFsStockTemplate,TemplateWordService _templateService, IntegrationService _integrationService, TitreService _titreService, SousTitreService _sousTitreService, ParagrapheService _paragrapheService,SousParagrapheService _sousParagrapheService,TableauService _tableauService , LigneService _ligneService, ColonneService _colonneService) { integrationService = _integrationService;
             gridFsStockTemplate = _gridFsStockTemplate;
             titreService = _titreService;
             paragrapheService = _paragrapheService;
@@ -45,6 +48,7 @@ namespace ProjectPfe.Controllers
 
             templateService = _templateService;
             soustitreservice = _sousTitreService;
+            inputXmlService = _inputXmlService;
 
                 }
 
@@ -61,58 +65,58 @@ namespace ProjectPfe.Controllers
         [Route("AddIntegration")]
         public String AddIntegration([FromForm] IFormFile file)
         {
-            string uploads = Path.Combine(@"D:/", "Uploads");
-            //Create directory if it doesn't exist 
-            Directory.CreateDirectory(uploads);
-           
-                if (file.Length > 0)
-                {
-                    string filePath = Path.Combine(uploads, file.FileName);
-                    using (Stream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
-                    {
-                        file.CopyTo(fileStream);
-                    }
-                }
+            List<Integration> integrations = new List<Integration>();
             
 
+                var objectIdFile = gridFsStockTemplate.UploadFileXml(file);
+                    Input input = new Input();
+                    input.IdChunks = objectIdFile.ToString();
+                    input.Filename = file.FileName;
+                    inputXmlService.Create(input);
+            var doc = gridFsStockTemplate.openfile(objectIdFile);
+
+                StreamReader sr = new StreamReader(doc, Encoding.Default);
+
+                
+                XDocument xDocument = XDocument.Load(sr);
 
 
-            XDocument coordinates = XDocument.Load(uploads+"/"+ file.FileName);
+                foreach (var xdoc in xDocument.Descendants("integration"))
+                {
+                    Integration integration = new Integration();
+                    integration.Nom = xdoc.Attribute("nom").Value;
 
-            List<Integration> integrations = new List<Integration>();
+                    integration.Prenom = xdoc.Element("prenom").Value;
+                    integration.Nationalite = xdoc.Element("nationalite").Value;
+                    integration.Age = double.Parse(xdoc.Element("age").Value);
+                    integration.Titres = new List<Titre>();
+                    integration.Paragraphes = new List<Paragraphe>();
+                    integration.Tableaux = new List<Tableau>();
+                    integrationService.Create(integration);
 
-            foreach (var coordinate in coordinates.Descendants("integration"))
-            {
-                Integration integration = new Integration();
-                integration.Nom = coordinate.Attribute("nom").Value;
+                    ImportElement.AddTitreToIntegration(xdoc, integration, titreService, soustitreservice);
 
-                integration.Prenom = coordinate.Element("prenom").Value;
-                integration.Nationalite = coordinate.Element("nationalite").Value;
-                integration.Age = double.Parse(coordinate.Element("age").Value);
-                integration.Titres = new List<Titre>();
-                integration.Paragraphes = new List<Paragraphe>();
-                integration.Tableaux = new List<Tableau>();
-                integrationService.Create(integration);
-
-                ImportElement.AddTitreToIntegration(coordinate, integration, titreService, soustitreservice);
-
-                ImportElement.AddParagrapheToIntegration(coordinate, integration, paragrapheService, sousparagrapheService);
-                ImportElement.AddTableToIntegration(coordinate, integration, tableauService, ligneService, colonneService);
+                    ImportElement.AddParagrapheToIntegration(xdoc, integration, paragrapheService, sousparagrapheService);
+                    ImportElement.AddTableToIntegration(xdoc, integration, tableauService, ligneService, colonneService);
 
 
-                integrationService.Update(integration.Id, integration);
+                    integrationService.Update(integration.Id, integration);
 
-                integrations.Add(integration);
-                GenerateXml generateXml = new GenerateXml();
-                generateXml.generate(integrations);
+                    integrations.Add(integration);
+                    GenerateXml generateXml = new GenerateXml();
+                    generateXml.generate(integrations);
+                    
                 return integration.Id;
+                    
 
+                }
+
+                return null;
             }
 
+             
+ 
             
-            return null;
-       
-        }
 
 
         [HttpPut(Name = "UpdateIntegration")]
