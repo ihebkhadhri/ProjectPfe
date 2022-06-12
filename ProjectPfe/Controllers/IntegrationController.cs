@@ -57,7 +57,7 @@ namespace ProjectPfe.Controllers
         [Route("AllIntegrations")]
         public List<Integration> AllIntegrations()
         {
-            DictionnaireService.validatename();
+           
             return integrationService.Get();
         }
 
