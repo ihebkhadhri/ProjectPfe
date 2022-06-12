@@ -162,7 +162,7 @@ namespace ProjectPfe.Services.libs
             string TextOriginal = Encoding.UTF8.GetString(bytes);
 
             string TextNewRapport = TextOriginal.Replace("##Nom##", integration.Nom).Replace("##Nationalite##",integration.Nationalite)
-           .Replace("##prenom##", integration.Prenom).Replace("##Age##", integration.Age.ToString());
+           .Replace("##prenom##", integration.Prenom).Replace("##Age##", integration.Age.ToString()).Replace("##Date Naissance##", integration.DateNaissance);
 
             byte[] bytesNewRapport = Encoding.Default.GetBytes(TextNewRapport);
           var objidRtfUser=  bucket.UploadFromBytes(integration.Id + ".rtf", bytesNewRapport);
