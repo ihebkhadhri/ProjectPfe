@@ -56,6 +56,7 @@ namespace ProjectPfe.Controllers
         [Route("AllIntegrations")]
         public List<Integration> AllIntegrations()
         {
+            DictionnaireService.validatename();
             return integrationService.Get();
         }
 
@@ -80,11 +81,14 @@ namespace ProjectPfe.Controllers
                 foreach (var xdoc in xDocument.Descendants("integration"))
                 {
                     Integration integration = new Integration();
-                    integration.Nom = xdoc.Attribute("nom").Value;
 
-                    integration.Prenom = xdoc.Element("prenom").Value;
+                DictionnaireService.validate(xdoc,integration);
+
+                    
                     integration.Nationalite = xdoc.Element("nationalite").Value;
                     integration.Age = double.Parse(xdoc.Element("age").Value);
+
+
                     integration.Titres = new List<Titre>();
                     integration.Paragraphes = new List<Paragraphe>();
                     integration.Tableaux = new List<Tableau>();
