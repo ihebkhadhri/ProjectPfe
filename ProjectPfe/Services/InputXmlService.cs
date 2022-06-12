@@ -19,7 +19,7 @@ namespace ProjectPfe.Services
                 InputXmlStoreDatabaseSettings.Value.DatabaseName);
 
             _InputCollection = mongoDatabase.GetCollection<Input>(
-                InputXmlStoreDatabaseSettings.Value.TemplateWordCollectionName);
+                InputXmlStoreDatabaseSettings.Value.InputCollectionName);
         }
 
         public List<Input> Get() =>
