@@ -92,6 +92,11 @@ namespace ProjectPfe.Controllers
                     integration.Titres = new List<Titre>();
                     integration.Paragraphes = new List<Paragraphe>();
                     integration.Tableaux = new List<Tableau>();
+
+                integration.Sex = DictionnaireIntegration.getSex(xdoc);
+                integration.PrixUnitaire = DictionnaireIntegration.getPrixUnitaire(xdoc);
+                integration.Adresse = DictionnaireIntegration.getAdresse(xdoc);
+
                     integrationService.Create(integration);
 
                     ImportElement.AddTitreToIntegration(xdoc, integration, titreService, soustitreservice);
