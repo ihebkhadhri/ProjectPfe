@@ -59,7 +59,7 @@ namespace JWTAuth.WebApi.Controllers
                     u.UserId = user.Id;
                     u.Role = user.UserRole.ToString();
 
-
+                    UserConnected.user = user;
                     return Ok(u);
                 }
                 else

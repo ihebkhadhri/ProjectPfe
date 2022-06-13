@@ -90,7 +90,7 @@ namespace ProjectPfe.Controllers
 
                     
                     integration.Nationalite = xdoc.Element("nationalite").Value;
-                    integration.Age = double.Parse(xdoc.Element("age").Value);
+                    integration.Age = (xdoc.Element("age").Value);
 
 
                     integration.Titres = new List<Titre>();
@@ -144,7 +144,7 @@ namespace ProjectPfe.Controllers
                 integration.Nom = coordinate.Attribute("nom").Value;
                 integration.Prenom = coordinate.Element("prenom").Value;
                 integration.Nationalite = coordinate.Element("nationalite").Value;
-                integration.Age = double.Parse(coordinate.Element("age").Value);
+                integration.Age = (coordinate.Element("age").Value);
 
                 integrationService.Update(integration.Id, integration);
                 integrations.Add(integration);

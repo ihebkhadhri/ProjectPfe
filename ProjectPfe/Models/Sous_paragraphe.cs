@@ -11,6 +11,7 @@ namespace ProjectPfe.Models
         public String libelle { get; set; }
         [BsonIgnore]
         public Paragraphe paragraphe { get; set; }
-        
+        public int? order { get; set; }
+
     }
 }

@@ -162,7 +162,30 @@ namespace ProjectPfe.Services.libs
             string TextOriginal = Encoding.UTF8.GetString(bytes);
 
             string TextNewRapport = TextOriginal.Replace("##Nom##", integration.Nom).Replace("##Nationalite##",integration.Nationalite)
-           .Replace("##prenom##", integration.Prenom).Replace("##Age##", integration.Age.ToString()).Replace("##Date Naissance##", integration.DateNaissance);
+           .Replace("##prenom##", integration.Prenom).Replace("##Age##", integration.Age.ToString()).Replace("##DateNaissance##", integration.DateNaissance)
+           .Replace("##sex##", integration.Sex)
+           .Replace("##prixunitaire##", integration.PrixUnitaire)
+           .Replace("##adresse##", integration.Adresse);
+
+            foreach(var element in integration.Titres)
+            {
+                String titre = "##titre" + element.order + "##";
+                 TextNewRapport = TextNewRapport.Replace(titre, element.libelle);
+                foreach (var souselement in element.Sous_titres)
+                {
+                    String soustitre = "##soustitre" + element.order + "##";
+                    TextNewRapport= TextNewRapport.Replace(soustitre, souselement.libelle);
+                }
+            }
+
+            foreach (var element in integration.Paragraphes)
+            {
+                TextNewRapport = TextNewRapport.Replace("##paragraphe" + element.order + "##", element.libelle);
+                foreach (var souselement in element.Sous_paragraphe)
+                {
+                    TextNewRapport = TextNewRapport.Replace("##sousparagraphe" + souselement.order + "##", souselement.libelle);
+                }
+            }
 
             byte[] bytesNewRapport = Encoding.Default.GetBytes(TextNewRapport);
           var objidRtfUser=  bucket.UploadFromBytes(integration.Id + ".rtf", bytesNewRapport);
