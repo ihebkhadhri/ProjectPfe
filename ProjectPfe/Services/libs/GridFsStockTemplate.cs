@@ -215,6 +215,11 @@ namespace ProjectPfe.Services.libs
             return bucket.OpenDownloadStream(Id);
         }
 
+        public void removefile(ObjectId Id)
+        {
+             bucket.Delete(Id);
+        }
+
 
     }
 

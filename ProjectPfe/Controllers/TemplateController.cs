@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using ProjectPfe.Models;
 using ProjectPfe.Services;
 using ProjectPfe.Services.libs;
@@ -46,11 +47,11 @@ namespace ProjectPfe.Controllers
         }
 
         [HttpPost(Name = "AddTemplate")]
-        [Route("AddTemplate")]
-        public List<TemplateWord> AddTemplate([FromForm] IFormFile[] files)
+        [Route("AddTemplate/{idcategorie}")]
+        public List<TemplateWord> AddTemplate(string idcategorie, [FromForm] IFormFile[] files)
         {
 
-            Categorie c = categorieService.Get().FirstOrDefault();
+            Categorie c = categorieService.Get(idcategorie);
 
             TemplateWord templateWord = new TemplateWord();
             templateWord.Creation_Date = DateTime.Now;
@@ -87,6 +88,19 @@ namespace ProjectPfe.Controllers
 
             return res;
             
+        }
+
+        [HttpPost(Name = "removeTemplate")]
+        [Route("removeTemplate/{id}")]
+        public void removeTemplate(String id)
+        {
+            TemplateWord template = templateWordService.Get(id);
+
+             gridFsStockTemplate.removefile(new ObjectId( template.FilePdfId));
+             gridFsStockTemplate.removefile(new ObjectId(template.FileRtfId));
+
+            templateWordService.Remove(template.Id);
+
         }
     }
 }

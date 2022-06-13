@@ -20,8 +20,8 @@ namespace ProjectPfe.Controllers
     {
 
 
-        private  IntegrationService integrationService;
-        
+        private IntegrationService integrationService;
+
         private readonly TitreService titreService;
         private readonly SousTitreService soustitreservice;
         private readonly ParagrapheService paragrapheService;
@@ -30,14 +30,16 @@ namespace ProjectPfe.Controllers
         private readonly LigneService ligneService;
         private readonly ColonneService colonneService;
 
-        
+
         private readonly TemplateWordService templateService;
         private readonly GridFsStockTemplate gridFsStockTemplate;
         private readonly InputXmlService inputXmlService;
 
- 
 
-        public IntegrationController(InputXmlService _inputXmlService, GridFsStockTemplate _gridFsStockTemplate,TemplateWordService _templateService, IntegrationService _integrationService, TitreService _titreService, SousTitreService _sousTitreService, ParagrapheService _paragrapheService,SousParagrapheService _sousParagrapheService,TableauService _tableauService , LigneService _ligneService, ColonneService _colonneService) { integrationService = _integrationService;
+
+        public IntegrationController(InputXmlService _inputXmlService, GridFsStockTemplate _gridFsStockTemplate, TemplateWordService _templateService, IntegrationService _integrationService, TitreService _titreService, SousTitreService _sousTitreService, ParagrapheService _paragrapheService, SousParagrapheService _sousParagrapheService, TableauService _tableauService, LigneService _ligneService, ColonneService _colonneService)
+        {
+            integrationService = _integrationService;
             gridFsStockTemplate = _gridFsStockTemplate;
             titreService = _titreService;
             paragrapheService = _paragrapheService;
@@ -50,14 +52,14 @@ namespace ProjectPfe.Controllers
             soustitreservice = _sousTitreService;
             inputXmlService = _inputXmlService;
 
-                }
+        }
 
 
         [HttpGet(Name = "AllIntegrations")]
         [Route("AllIntegrations")]
         public List<Integration> AllIntegrations()
         {
-           
+
             return integrationService.Get();
         }
 
@@ -67,65 +69,65 @@ namespace ProjectPfe.Controllers
         public String AddIntegration([FromForm] IFormFile file)
         {
             List<Integration> integrations = new List<Integration>();
-            
 
-                var objectIdFile = gridFsStockTemplate.UploadFileXml(file);
-                    Input input = new Input();
-                    input.IdChunks = objectIdFile.ToString();
-                    input.Filename = file.FileName;
-                    inputXmlService.Create(input);
+
+            var objectIdFile = gridFsStockTemplate.UploadFileXml(file);
+            Input input = new Input();
+            input.IdChunks = objectIdFile.ToString();
+            input.Filename = file.FileName;
+            inputXmlService.Create(input);
             var doc = gridFsStockTemplate.openfile(objectIdFile);
 
-                StreamReader sr = new StreamReader(doc, Encoding.Default);
-
-                
-                XDocument xDocument = XDocument.Load(sr);
+            StreamReader sr = new StreamReader(doc, Encoding.Default);
 
 
-                foreach (var xdoc in xDocument.Descendants("integration"))
-                {
-                    Integration integration = new Integration();
-
-                DictionnaireService.validate(xdoc,integration);
-
-                    
-                    integration.Nationalite = xdoc.Element("nationalite").Value;
-                    integration.Age = (xdoc.Element("age").Value);
+            XDocument xDocument = XDocument.Load(sr);
 
 
-                    integration.Titres = new List<Titre>();
-                    integration.Paragraphes = new List<Paragraphe>();
-                    integration.Tableaux = new List<Tableau>();
+            foreach (var xdoc in xDocument.Descendants("integration"))
+            {
+                Integration integration = new Integration();
+
+                DictionnaireService.validate(xdoc, integration);
+
+
+                integration.Nationalite = xdoc.Element("nationalite").Value;
+                integration.Age = (xdoc.Element("age").Value);
+
+
+                integration.Titres = new List<Titre>();
+                integration.Paragraphes = new List<Paragraphe>();
+                integration.Tableaux = new List<Tableau>();
 
                 integration.Sex = DictionnaireIntegration.getSex(xdoc);
                 integration.PrixUnitaire = DictionnaireIntegration.getPrixUnitaire(xdoc);
                 integration.Adresse = DictionnaireIntegration.getAdresse(xdoc);
 
-                    integrationService.Create(integration);
+                integrationService.Create(integration);
 
-                    ImportElement.AddTitreToIntegration(xdoc, integration, titreService, soustitreservice);
+                ImportElement.AddTitreToIntegration(xdoc, integration, titreService, soustitreservice);
 
-                    ImportElement.AddParagrapheToIntegration(xdoc, integration, paragrapheService, sousparagrapheService);
-                    ImportElement.AddTableToIntegration(xdoc, integration, tableauService, ligneService, colonneService);
+                ImportElement.AddParagrapheToIntegration(xdoc, integration, paragrapheService, sousparagrapheService);
+                ImportElement.AddTableToIntegration(xdoc, integration, tableauService, ligneService, colonneService);
 
 
-                    integrationService.Update(integration.Id, integration);
+                integrationService.Update(integration.Id, integration);
 
-                    integrations.Add(integration);
-                    GenerateXml generateXml = new GenerateXml();
-                    generateXml.generate(integrations);
-                    
+                integrations.Add(integration);
+                GenerateXml generateXml = new GenerateXml();
+                generateXml.generate(integrations);
+
                 return integration.Id;
-                    
 
-                }
 
-                return null;
             }
 
-             
- 
-            
+            return null;
+        }
+
+
+
+
 
 
         [HttpPut(Name = "UpdateIntegration")]
@@ -173,10 +175,10 @@ namespace ProjectPfe.Controllers
         [Route("GetIntegration/{idIntegration}")]
         public Integration GetIntegration(string idIntegration)
         {
-          Integration integration=  integrationService.Get( idIntegration);
+            Integration integration = integrationService.Get(idIntegration);
 
-           
-           
+
+
             return integration;
 
         }
@@ -184,9 +186,9 @@ namespace ProjectPfe.Controllers
 
         [HttpGet(Name = "GetFinalPdf")]
         [Route("GetFinalPdf/{idIntegration}")]
-        public String GetFinalPdf(String  idIntegration)
+        public String GetFinalPdf(String idIntegration)
         {
-           
+
             return gridFsStockTemplate.DownloadFileByName(idIntegration);
 
         }
@@ -208,5 +210,5 @@ namespace ProjectPfe.Controllers
     }
 
 
-    
+
 }
