@@ -18,17 +18,63 @@ namespace ProjectPfe.Controllers
         private readonly CategorieService categorieService;
         public CategorieController(CategorieService _categorieService) => categorieService = _categorieService;
 
-        [HttpPut(Name = "GetCategorie")]
-        [Route("GetCategorie")]
-        public List<Categorie> GetCategorie()
+
+        [HttpDelete(Name = "GetById")]
+        [Route("GetById/{id}")]
+        public async Task<IActionResult> GetById(string id)
         {
+            var categorie = await categorieService.GetByIdAsync(id);
 
-            
+            return Ok(categorie);
 
-            
-           
-            return categorieService.Get(); 
+        }
 
+        [HttpGet]
+        [Route("GetAll")]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await categorieService.GetAllAsync());
+        }
+
+        [HttpPost(Name = "Post")]
+        [Route("Post")]
+        public async Task<IActionResult> Post(Categorie categorie)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            await categorieService.CreateAsync(categorie);
+            return Ok(categorie.Id);
+        }
+
+        [HttpPost(Name = "Update")]
+        [Route("Update/{id}")]
+        public async Task<IActionResult> Update(string id, Categorie updatedCategorie)
+        {
+            var categorie = categorieService.GetByIdAsync(id);
+
+            if (categorie == null)
+            {
+                return NotFound();
+            }
+
+            await categorieService.UpdateAsync(id, updatedCategorie);
+
+            return NoContent();
+        }
+
+        [HttpDelete(Name = "Delete")]
+        [Route("Delete/{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var categorie = await categorieService.GetByIdAsync(id);
+            if (categorie == null)
+            {
+                return NotFound();
+            }
+            await categorieService.DeleteAsync(categorie.Id);
+            return Ok($"categorie with Id = {id} deleted");
         }
     }
 }

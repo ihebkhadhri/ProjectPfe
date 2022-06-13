@@ -24,17 +24,30 @@ namespace ProjectPfe.Services
         public List<Categorie> Get() =>
              _CategoriesCollection.Find(_ => true).ToList();
 
-        public Categorie Get(string id) =>
-             _CategoriesCollection.Find(x => x.Id == id).FirstOrDefault();
+        public async Task<List<Categorie>> GetAllAsync()
+        {
+            return await _CategoriesCollection.Find(c => true).ToListAsync();
+        }
 
-        public void Create(Categorie newCategorie) =>
-             _CategoriesCollection.InsertOne(newCategorie);
+        public async Task<Categorie> GetByIdAsync(string id)
+        {
+            return await _CategoriesCollection.Find<Categorie>(c => c.Id == id).FirstOrDefaultAsync();
+        }
 
-        public void Update(string id, Categorie updatedCategorie) =>
-             _CategoriesCollection.ReplaceOne(x => x.Id == id, updatedCategorie);
 
-        public void Remove(string id) =>
-             _CategoriesCollection.DeleteOne(x => x.Id == id);
+        public async Task<Categorie> CreateAsync(Categorie categorie)
+        {
+            await _CategoriesCollection.InsertOneAsync(categorie);
+            return categorie;
+        }
+        public async Task UpdateAsync(string id, Categorie categorie)
+        {
+            await _CategoriesCollection.ReplaceOneAsync(c => c.Id == id, categorie);
+        }
+        public async Task DeleteAsync(string id)
+        {
+            await _CategoriesCollection.DeleteOneAsync(c => c.Id == id);
+        }
     }
 }
 
