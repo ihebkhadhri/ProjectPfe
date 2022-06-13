@@ -85,6 +85,7 @@ namespace ProjectPfe.Controllers
                 foreach (var xdoc in xDocument.Descendants("integration"))
                 {
                     Integration integration = new Integration();
+                integration.inputfileid = objectIdFile.ToString();
 
                 DictionnaireService.validate(xdoc,integration);
 
@@ -100,7 +101,7 @@ namespace ProjectPfe.Controllers
                 integration.Sex = DictionnaireIntegration.getSex(xdoc);
                 integration.PrixUnitaire = DictionnaireIntegration.getPrixUnitaire(xdoc);
                 integration.Adresse = DictionnaireIntegration.getAdresse(xdoc);
-
+                integration.Created = DateTime.Now;
                     integrationService.Create(integration);
 
                     ImportElement.AddTitreToIntegration(xdoc, integration, titreService, soustitreservice);
@@ -201,7 +202,7 @@ namespace ProjectPfe.Controllers
             List<Integration> integrations = new List<Integration>();
             integrations.Add(integration);
             GenerateWord generateWord = new GenerateWord();
-            generateWord.GeneratWord(integrations, template, gridFsStockTemplate);
+            generateWord.GeneratWord(integrations, template, gridFsStockTemplate,integrationService);
             return integration;
         }
 

@@ -5,7 +5,7 @@ using ProjectPfe.Services.libs;
 
 namespace ProjectPfe.Controllers
 {
-//    [Produces("application/json")]
+
     [ApiController]
     [Route("[controller]")]
     public class TemplateController : Controller
