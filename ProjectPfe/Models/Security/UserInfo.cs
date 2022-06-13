@@ -9,4 +9,8 @@
       
 
     }
+    public class UserConnected
+    {
+        public static User user { get; set; }  
+    }
 }

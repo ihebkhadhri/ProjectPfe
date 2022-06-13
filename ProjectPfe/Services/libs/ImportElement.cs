@@ -11,11 +11,16 @@ namespace ProjectPfe.Services.libs
         public static void AddTitreToIntegration(XElement coordinate ,Integration integration,TitreService
             titreService, SousTitreService soustitreService)
         {
-            
+            //incrémenter les titres
+            int i = 0;
             foreach (var titre in coordinate.Descendants("Titre"))
             {
+                //ordre titre (incrémentation)
+                i=i+1;
+
                 Titre t = new Titre();
                 t.libelle = titre.Attribute("libelle").Value;
+                t.order = i;
                 t.integration = integration;
                 titreService.Create(t);
                 integration.Titres.Add(t);
@@ -29,11 +34,14 @@ namespace ProjectPfe.Services.libs
 
         public static void AddSousTitreToIntegration(XElement titrecoordinate, Titre titre, SousTitreService soustitreService)
         {
-
+            //incrémenter les sous  titres
+            int i = 0;
             foreach (var soustitre in titrecoordinate.Descendants("Soustitre"))
             {    
+                i=i + 1;
                 Sous_titre t = new Sous_titre();
                 t.libelle = soustitre.Attribute("libelle").Value;
+                t.order=i;
                 t.titre = titre;
                 soustitreService.Create(t);
                 titre.Sous_titres.Add(t);
@@ -42,11 +50,14 @@ namespace ProjectPfe.Services.libs
         }
         public static void AddParagrapheToIntegration(XElement coordinate, Integration integration, ParagrapheService paragrapheService, SousParagrapheService sousparagrapheservice)
         {
-
+            //incrémenter les sous  titres
+            int i = 0;
             foreach (var paragraphe in coordinate.Descendants("Paragraphe"))
             {
+                i= i + 1;
                 Paragraphe t = new Paragraphe();
                 t.libelle = paragraphe.Attribute("libelle").Value;
+                t.order= i;
                 paragrapheService.Create(t);
                 integration.Paragraphes.Add(t);
                 t.Sous_paragraphe = new List<Sous_paragraphe>();
@@ -59,11 +70,13 @@ namespace ProjectPfe.Services.libs
 
         public static void AddSousParagrapheToIntegration(XElement paragraphecoordinate, Paragraphe paragraphe, SousParagrapheService sousparagrapheservice)
         {
-
+            int i= 0;
             foreach (var sousparagraphe in paragraphecoordinate.Descendants("SousParagraphe"))
             {
+                i= i + 1;
                 Sous_paragraphe t = new Sous_paragraphe();
                 t.libelle = sousparagraphe.Attribute("libelle").Value;
+                t.order = i;
                 t.paragraphe = paragraphe;
                 sousparagrapheservice.Create(t);
                 paragraphe.Sous_paragraphe.Add(t);
@@ -88,15 +101,17 @@ namespace ProjectPfe.Services.libs
 
         public static void AddLigneToTableau(XElement tableaucoordinate, Tableau tableau, LigneService ligneService, ColonneService colonneService)
         {
-
+            int i=0;
             foreach (var ligne in tableaucoordinate.Descendants("Ligne"))
             {
+                i=  i+1;
                 Ligne t = new Ligne();
                
                 if(ligne.Attribute("libelle")!=null)
                     t.libelle = ligne.Attribute("libelle").Value;
                 
                 t.tableau = tableau;
+                t.order = i;
                 ligneService.Create(t);
                 tableau.lignes.Add(t);
                 t.colonnes = new List<Colonne>();
