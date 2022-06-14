@@ -25,6 +25,7 @@ namespace ConnexionMongo.Models
          public List<Titre>Titres { get; set; }
         public List<Tableau> Tableaux { get; set; }
         public List<Paragraphe> Paragraphes { get; set; }
+        public User UserImport { get; set; }
 
     }
 }
