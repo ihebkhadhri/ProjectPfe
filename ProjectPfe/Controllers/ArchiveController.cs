@@ -1,6 +1,7 @@
 ﻿using ConnexionMongo.Models;
 using ConnexionMongo.Services;
 using Microsoft.AspNetCore.Mvc;
+using ProjectPfe.Models;
 using ProjectPfe.Services.libs;
 
 namespace ProjectPfe.Controllers
@@ -19,6 +20,8 @@ namespace ProjectPfe.Controllers
             
         }
 
+        //back
+        
 
         [HttpGet(Name = "AllArchives")]
         [Route("AllArchives")]
@@ -56,11 +59,22 @@ namespace ProjectPfe.Controllers
             
 
 
-            
+        }
+
+        //front
 
 
+        [HttpGet(Name = "AllArchivesbyuser")]
+        [Route("AllArchivesbyuser")]
+        public List<Integration> AllArchivesbyuser()
+        {
+
+            List<Integration> integrations = integrationService.Getbyuser(UserConnected.user.Id);
+
+            return integrations;
 
         }
+
 
     }
 }
