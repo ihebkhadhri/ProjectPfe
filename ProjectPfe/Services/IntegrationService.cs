@@ -1,6 +1,7 @@
 ﻿using ConnexionMongo.Models;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using ProjectPfe.Models;
 
 namespace ConnexionMongo.Services
 {
@@ -35,6 +36,10 @@ namespace ConnexionMongo.Services
 
         public void  Remove(string id) =>
              _IntegrationsCollection.DeleteOne(x => x.Id == id);
+
+        public List<Integration> Getbyuser(string userid) =>
+             _IntegrationsCollection.Find(x => x.UserImport.Id == userid).ToList();
+
     }
 }
 

@@ -15,12 +15,17 @@ namespace ConnexionMongo.Models
         public string? Age { get; set; }
         public string? Nationalite { get; set; }
         public string? Sex { get; set; }
-        public string? PrixUnitaire { get; set; }
-        public string? Adresse { get; set; }
+        public String? PrixUnitaire { get; set; }
+        public String? Adresse { get; set; }
+        public DateTime? Created { get; set; }
+        public string? rtfid { get; set; }
+        public string? pdfid { get; set; }
+        public string? inputfileid { get; set; }
 
          public List<Titre>Titres { get; set; }
         public List<Tableau> Tableaux { get; set; }
         public List<Paragraphe> Paragraphes { get; set; }
+        public User UserImport { get; set; }
 
     }
 }

@@ -204,6 +204,11 @@ namespace ProjectPfe.Services.libs
             return file.OpenRead();
         }
 
+        public void removeFile(string id)
+        {
+            bucket.Delete(new ObjectId( id));
+        }
+
         public ObjectId AddFile(Stream fileStream, string fileName)
         {
             var fileInfo = _gridFs.Upload(fileStream, fileName);
@@ -213,6 +218,18 @@ namespace ProjectPfe.Services.libs
         public GridFSDownloadStream openfile(ObjectId Id)
         {
             return bucket.OpenDownloadStream(Id);
+        }
+
+        public void removefile(ObjectId Id)
+        {
+             bucket.Delete(Id);
+        }
+
+
+        public string findarchive(string id)
+        {
+            var bytes = bucket.DownloadAsBytes(new ObjectId(id));
+            return Convert.ToBase64String(bytes);
         }
 
 
