@@ -21,55 +21,55 @@ namespace ProjectPfe.Controllers
 
         [HttpDelete(Name = "GetById")]
         [Route("GetById/{id}")]
-        public async Task<IActionResult> GetById(string id)
+        public IActionResult GetById(string id)
         {
-            var categorie = await categorieService.GetByIdAsync(id);
+            var categorie = categorieService.Get(id);
 
             return Ok(categorie);
         }
 
         [HttpGet]
         [Route("GetAll")]
-        public async Task<IActionResult> GetAll()
+        public IActionResult GetAll()
         {
-            return Ok(await categorieService.GetAllAsync());
+            return Ok(categorieService.Get());
         }
 
         [HttpPost(Name = "Post")]
         [Route("Post")]
-        public async Task<IActionResult> Post(Categorie categorie)
+        public IActionResult Post(Categorie categorie)
         {
             
-            await categorieService.CreateeAsync(categorie);
+            categorieService.Create(categorie);
             return CreatedAtAction(nameof(GetById), new { id = categorie.Id }, categorie);
         }
 
         [HttpPost(Name = "Update")]
         [Route("Update/{id}")]
-        public async Task<IActionResult> Update(string id, Categorie updatedCategorie)
+        public IActionResult Update(string id, Categorie updatedCategorie)
         {
-            var categorie = categorieService.GetByIdAsync(id);
+            var categorie = categorieService.Get(id);
 
             if (categorie == null)
             {
                 return NotFound();
             }
 
-            await categorieService.UpdateAsync(id, updatedCategorie);
+             categorieService.Update(id, updatedCategorie);
 
             return NoContent();
         }
 
         [HttpDelete(Name = "Delete")]
         [Route("Delete/{id}")]
-        public async Task<IActionResult> Delete(string id)
+        public IActionResult Delete(string id)
         {
-            var categorie = await categorieService.GetByIdAsync(id);
+            var categorie =  categorieService.Get(id);
             if (categorie == null)
             {
                 return NotFound();
             }
-            await categorieService.DeleteAsync(categorie.Id);
+            categorieService.Remove(categorie.Id);
             return Ok($"categorie with Id = {id} deleted");
         }
     }
