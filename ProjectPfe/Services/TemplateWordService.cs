@@ -28,6 +28,9 @@ namespace ProjectPfe.Services
         public TemplateWord Get(string id) =>
              _TemplateWordsCollection.Find(x => x.Id == id).FirstOrDefault();
 
+        public List<TemplateWord> GetByCategorieId(string id) =>
+            _TemplateWordsCollection.Find(x => x.categorie.Id == id).ToList();
+
         public void Create(TemplateWord newTemplateWord) =>
              _TemplateWordsCollection.InsertOne(newTemplateWord);
 

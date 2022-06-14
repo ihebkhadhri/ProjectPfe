@@ -22,11 +22,11 @@ namespace ProjectPfe.Controllers
         }
 
         [HttpGet(Name = "AllTemplatesByCategorie")]
-        [Route("AllTemplatesByCategorie")]
-        public List<String> AllTemplatesByCategorie()
+        [Route("AllTemplatesByCategorie/{idcat}")]
+        public List<String> AllTemplatesByCategorie(string idcat)
         {
             List<String> allTemplatespdf = new List<String>();
-            var listemplates = templateWordService.Get();
+            var listemplates = templateWordService.GetByCategorieId(idcat);
             foreach(var t in listemplates)
             {
                 allTemplatespdf.Add(t.Id+"-*-"+ gridFsStockTemplate.DownloadFile(t.FilePdfId));
