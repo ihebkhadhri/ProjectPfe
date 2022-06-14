@@ -34,6 +34,8 @@ namespace ProjectPfe.Services
             return await _CategoriesCollection.Find<Categorie>(c => c.Id == id).FirstOrDefaultAsync();
         }
 
+        public async Task CreateeAsync(Categorie categorie) =>
+       await _CategoriesCollection.InsertOneAsync(categorie);
 
         public async Task<Categorie> CreateAsync(Categorie categorie)
         {

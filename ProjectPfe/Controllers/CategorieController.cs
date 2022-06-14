@@ -26,7 +26,6 @@ namespace ProjectPfe.Controllers
             var categorie = await categorieService.GetByIdAsync(id);
 
             return Ok(categorie);
-
         }
 
         [HttpGet]
@@ -40,12 +39,9 @@ namespace ProjectPfe.Controllers
         [Route("Post")]
         public async Task<IActionResult> Post(Categorie categorie)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-            await categorieService.CreateAsync(categorie);
-            return Ok(categorie.Id);
+            
+            await categorieService.CreateeAsync(categorie);
+            return CreatedAtAction(nameof(GetById), new { id = categorie.Id }, categorie);
         }
 
         [HttpPost(Name = "Update")]
