@@ -39,6 +39,11 @@ namespace ProjectPfe.Services
 
         public void Remove(string id) =>
              _UsersCollection.DeleteOne(x => x.Id == id);
+
+        public List<User> Getgroup() =>
+             _UsersCollection.Find(x => x.UserRole == UserRole.Utilisateur && x.validate==false).ToList();
+
+        
     }
 }
 
