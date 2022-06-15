@@ -8,10 +8,10 @@ namespace ProjectPfe.Models
 
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
-        public String libelle { get; set; }
+        public string? Id { get; set; }
+        public String? libelle { get; set; }
         [BsonIgnore]
-        public Ligne ligne { get; set; }
+        public Ligne? ligne { get; set; }
 
     }
 }

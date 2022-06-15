@@ -195,13 +195,13 @@ namespace ProjectPfe.Controllers
 
         }
 
-
-        [Route("EcrireTemplate/{idIntegration}/{idTemplateChoisi}")]
-        public Integration EcrireTemplate(String idIntegration, String idTemplateChoisi)
+        [HttpPut]
+        [Route("EcrireTemplate/{idTemplateChoisi}")]
+        public Integration EcrireTemplate( String idTemplateChoisi, Integration integration)
         {
             TemplateWord template = templateService.Get(idTemplateChoisi);
 
-            Integration integration = integrationService.Get(idIntegration);
+           
             List<Integration> integrations = new List<Integration>();
             integrations.Add(integration);
             GenerateWord generateWord = new GenerateWord();
