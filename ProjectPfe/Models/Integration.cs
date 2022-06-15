@@ -22,11 +22,11 @@ namespace ConnexionMongo.Models
         public string? pdfid { get; set; }
         public string? inputfileid { get; set; }
 
-         public List<Titre>Titres { get; set; }
-        public List<Tableau> Tableaux { get; set; }
-        public List<Paragraphe> Paragraphes { get; set; }
-        public User UserImport { get; set; }
-        public TemplateWord template { get; set; }
+         public List<Titre>? Titres { get; set; }
+        public List<Tableau>? Tableaux { get; set; }
+        public List<Paragraphe>? Paragraphes { get; set; }
+        public User? UserImport { get; set; }
+        public TemplateWord? template { get; set; }
 
     }
 }

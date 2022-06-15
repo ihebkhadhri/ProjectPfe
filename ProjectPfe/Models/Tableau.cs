@@ -9,10 +9,10 @@ namespace ProjectPfe.Models
 
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
-        public String libelle { get; set; }
-        public Integration integration { get; set; }
-        public List<Ligne> lignes { get; set; }
+        public string? Id { get; set; }
+        public String? libelle { get; set; }
+        public Integration? integration { get; set; }
+        public List<Ligne>? lignes { get; set; }
         
     }
 }
