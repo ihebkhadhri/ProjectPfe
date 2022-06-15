@@ -25,6 +25,7 @@ namespace ProjectPfe.Services
 
               Stream file=  gridFsStockTemplate.GetFile(idrtf);
                 integration.pdfid = convertToPdf3(file, integration.Id, gridFsStockTemplate);
+                integration.template = templateClass;
                 integrationService.Update(integration.Id, integration);
 
             }
