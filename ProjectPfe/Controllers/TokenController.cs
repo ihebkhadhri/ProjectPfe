@@ -1,7 +1,10 @@
-﻿using ConnexionMongo.Services;
+﻿using AutoMapper;
+using ConnexionMongo.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ProjectPfe.Models;
+
 using ProjectPfe.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -16,11 +19,36 @@ namespace JWTAuth.WebApi.Controllers
     {
         public IConfiguration _configuration;
         UserService _context;
+        //private readonly UserManager<User> _userManager;
+        
 
         public TokenController(IConfiguration config, UserService context)
         {
             _configuration = config;
             _context = context;
+            //_userManager = userManager;
+            
+        }
+        [HttpGet]
+        [Route("GetUsers")]
+        public ActionResult<List<User>> GetUsers()
+        {
+            return _context.Get();
+        }
+        [HttpDelete(Name = "GetUser")]
+        [Route("GetUser/{id}")]
+        public ActionResult<User> GetUser(string id)
+        {
+            var user = _context.Get(id);
+            return (user);
+        }
+        [HttpPost(Name = "Create")]
+        [Route("Create")]
+        public ActionResult<User> Create(User user)
+        {
+            _context.Create(user);
+            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+          
         }
 
         [Route("GetUser/{Email}/{Password}")]

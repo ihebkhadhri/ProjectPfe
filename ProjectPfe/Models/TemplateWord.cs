@@ -13,7 +13,6 @@ namespace ProjectPfe.Models
         public User user_create { get; set; }
         public DateTime Date_Suprression { get; set; }
         public Categorie categorie { get; set; }
-
         public String FilePdfId { get; set; }
         public String FileRtfId { get; set; }
     }
