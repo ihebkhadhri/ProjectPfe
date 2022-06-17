@@ -50,6 +50,18 @@ namespace JWTAuth.WebApi.Controllers
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
           
         }
+        [HttpDelete(Name = "DeleteUser")]
+        [Route("DeleteUser/{id}")]
+        public IActionResult Delete(string id)
+        {
+            var user = _context.Get(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            _context.Remove(user.Id);
+            return Ok($"categorie with Id = {id} deleted");
+        }
 
         [Route("GetUser/{Email}/{Password}")]
         public async Task<IActionResult> Post(String Email, String Password )
