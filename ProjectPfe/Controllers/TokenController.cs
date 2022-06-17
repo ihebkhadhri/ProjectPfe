@@ -46,6 +46,7 @@ namespace JWTAuth.WebApi.Controllers
         [Route("Create")]
         public ActionResult<User> Create(User user)
         {
+            user.validate = false;
             _context.Create(user);
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
           
@@ -78,7 +79,7 @@ namespace JWTAuth.WebApi.Controllers
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                         new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
                         new Claim("UserId", user.Id.ToString()),
-                        new Claim("DisplayName", user.DisplayName),
+                        new Claim("DisplayName", user.LastName),
                         new Claim("UserName", user.Username),
                         
                     };
