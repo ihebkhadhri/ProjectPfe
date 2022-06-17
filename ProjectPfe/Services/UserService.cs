@@ -1,17 +1,13 @@
 ﻿using ConnexionMongo.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using ProjectPfe.Models;
-
 
 namespace ProjectPfe.Services
 {
     public class UserService
     {
         private readonly IMongoCollection<User> _UsersCollection;
-        //private readonly RoleManager<IdentityRole> _roleManager;
-        //private readonly UserManager<User> _userManager;
 
         public UserService(
             IOptions<DbPfeDatabaseSettings> UserStoreDatabaseSettings)
@@ -44,21 +40,10 @@ namespace ProjectPfe.Services
         public void Remove(string id) =>
              _UsersCollection.DeleteOne(x => x.Id == id);
 
-        //public async Task<string> AddRoleAsync(AddRoleModel model)
-        //{
-        //    var user = await _userManager.FindByIdAsync(model.UserId);
+        public List<User> Getgroup() =>
+             _UsersCollection.Find(x => x.UserRole == UserRole.Utilisateur && x.validate==false).ToList();
 
-        //    if (user is null || !await _roleManager.RoleExistsAsync(model.Role))
-        //        return "Invalid user ID or Role";
-
-        //    if (await _userManager.IsInRoleAsync(user, model.Role))
-        //        return "User already assigned to this role";
-
-        //    var result = await _userManager.AddToRoleAsync(user, model.Role);
-
-        //    return result.Succeeded ? string.Empty : "Sonething went wrong";
-
-        //}
+        
     }
 }
 

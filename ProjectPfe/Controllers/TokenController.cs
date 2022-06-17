@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿
 using ConnexionMongo.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -117,5 +117,27 @@ namespace JWTAuth.WebApi.Controllers
         {
             return  _context.GetByEmailPassword(email, password);
         }
+
+
+        [HttpGet(Name = "Getgroup")]
+        [Route("Getgroup")]
+        public List<User> GetUserByrole()
+        {
+           var groups= _context.Getgroup();
+            return groups;
+        }
+
+        [HttpPut(Name = "validategroup")]
+        [Route("validategroup/{id}")]
+        public User validategroup(string id)
+        {
+          var User= _context.Get(id);
+            User.validate = true;
+            _context.Update(id, User);
+            return User;
+        }
+
+
+
     }
 }

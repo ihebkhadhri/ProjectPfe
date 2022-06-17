@@ -1,5 +1,4 @@
-﻿using AspNetCore.Identity.MongoDbCore.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json;
@@ -19,9 +18,8 @@ namespace ProjectPfe.Models
         public String? Email { get; set; }
         public String? FirstName { get; set; }
         public String? LastName { get; set; }
-        
-        public UserRole UserRole { get; set; }
-        
+        public UserRole? UserRole { get; set; }
+        public Boolean? validate { get; set; }
     }
     [System.Text.Json.Serialization.JsonConverter(typeof(JsonStringEnumConverter))]
     public enum UserRole
