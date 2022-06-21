@@ -46,9 +46,22 @@ namespace JWTAuth.WebApi.Controllers
         [Route("Create")]
         public ActionResult<User> Create(User user)
         {
+            user.validate = false;
             _context.Create(user);
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
           
+        }
+        [HttpDelete(Name = "DeleteUser")]
+        [Route("DeleteUser/{id}")]
+        public IActionResult Delete(string id)
+        {
+            var user = _context.Get(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            _context.Remove(user.Id);
+            return Ok($"categorie with Id = {id} deleted");
         }
 
         [Route("GetUser/{Email}/{Password}")]
@@ -66,7 +79,7 @@ namespace JWTAuth.WebApi.Controllers
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                         new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
                         new Claim("UserId", user.Id.ToString()),
-                        new Claim("DisplayName", user.DisplayName),
+                        new Claim("DisplayName", user.LastName),
                         new Claim("UserName", user.Username),
                         
                     };

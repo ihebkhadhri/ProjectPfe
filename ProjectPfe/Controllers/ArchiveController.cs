@@ -85,5 +85,64 @@ namespace ProjectPfe.Controllers
         }
 
 
+        [HttpGet(Name = "MesArchivesPdf")]
+        [Route("MesArchivesPdf")]
+        public List<String> MesArchivesPdf()
+        {
+            List<String> allarchives = new List<String>();
+            List<Integration> integrations = integrationService.Getbyuser(UserConnected.user.Id);
+            foreach (var t in integrations)
+            {
+                allarchives.Add( gridFsStockTemplate.DownloadFile(t.pdfid));
+            }
+
+            return allarchives;
+
+        }
+
+        [HttpGet(Name = "MesArchivesPdfFiltrer")]
+        [Route("MesArchivesPdfFiltrer/{filtresearch?}")]
+        public List<String> MesArchivesPdfFiltrer(String filtresearch = "")
+        {
+            List<String> allarchives = new List<String>();
+            List<Integration> integrations = integrationService.Getbyuser(UserConnected.user.Id);
+            String _filtresearch=filtresearch.ToLower();
+
+            if (_filtresearch == "")
+            {
+                foreach (var t in integrations)
+                {
+                    allarchives.Add(gridFsStockTemplate.DownloadFile(t.pdfid));
+                }
+
+                return allarchives;
+            }
+
+
+
+            foreach (var t in integrations)
+            {
+                var titres = t.Titres.Where(tr => tr.libelle.ToLower().Contains(_filtresearch)).ToList();
+                var paragrapges = t.Paragraphes.Where(tr => tr.libelle.ToLower().Contains(_filtresearch)).ToList();
+
+                var soustitres = t.Titres.Where(tr => tr.Sous_titres.Where(st => st.libelle.ToLower().Contains(_filtresearch)).ToList().Count > 0).ToList();
+                var sousparagraphe = t.Paragraphes.Where(tr => tr.Sous_paragraphe.Where(st => st.libelle.ToLower().Contains(_filtresearch)).ToList().Count > 0).ToList();
+
+
+                if (soustitres.Count>0 || sousparagraphe.Count>0 || titres.Count > 0 || paragrapges.Count > 0 || t.Adresse.ToLower().Contains(_filtresearch) || t.Age.ToLower().Contains(_filtresearch) || t.DateNaissance.ToLower().Contains(_filtresearch) || t.Nationalite.ToLower().Contains(_filtresearch) || t.Nom.ToLower().Contains(_filtresearch) || t.Prenom.ToLower().Contains(_filtresearch) || t.PrixUnitaire.ToLower().Contains(_filtresearch) || t.Sex.ToLower().Contains(_filtresearch) )
+                {
+                    
+                    
+                        allarchives.Add(gridFsStockTemplate.DownloadFile(t.pdfid));
+                    
+                }
+                
+            }
+
+            return allarchives;
+
+        }
+
+
     }
 }

@@ -38,7 +38,7 @@ namespace ConnexionMongo.Services
              _IntegrationsCollection.DeleteOne(x => x.Id == id);
 
         public List<Integration> Getbyuser(string userid) =>
-             _IntegrationsCollection.Find(x => x.UserImport.Id == userid).ToList();
+             _IntegrationsCollection.Find(x => x.UserImport.Id == userid && x.pdfid!=null).ToList();
 
     }
 }

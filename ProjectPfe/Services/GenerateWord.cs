@@ -48,6 +48,7 @@ namespace ProjectPfe.Services
                 }
 
                 File.Delete(Directory.GetCurrentDirectory()+"/" + idIntegration + ".pdf");
+                doc.Close();
                 return idfile;
             }
            
