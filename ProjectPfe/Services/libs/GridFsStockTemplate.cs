@@ -232,6 +232,12 @@ namespace ProjectPfe.Services.libs
             return Convert.ToBase64String(bytes);
         }
 
+        public string findainput(string id)
+        {
+            var bytes = bucket.DownloadAsBytes(new ObjectId(id));
+            return Convert.ToBase64String(bytes);
+        }
+
 
     }
 

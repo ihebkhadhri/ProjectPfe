@@ -60,6 +60,15 @@ namespace ProjectPfe.Controllers
 
 
         }
+        [HttpGet(Name = "Downloadinput")]
+        [Route("Downloadinput/{idintegration}/")]
+        public string Downloadinput(string idintegration)
+        {
+            var integration = integrationService.Get(idintegration);
+            return gridFsStockTemplate.findainput(integration.inputfileid);
+
+
+        }
 
         //front
 
