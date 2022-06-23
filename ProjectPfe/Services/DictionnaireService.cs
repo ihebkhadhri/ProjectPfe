@@ -7,9 +7,9 @@ namespace ProjectPfe.Services
 	{
 		public static void validate(XElement xdoc, Integration integration)
 		{
-			List<String> Noms = new List<string>() { "Name", "Nomm", "NNom", "Noom" };
-			List<String> Prenoms = new List<string>() { "Lastname", "prenomm", "prenom" };
-			List<String> Dates = new List<string>() { "Daate", "Datenaissance", "Dt" };
+			List<String> Noms = new List<string>() { "name", "nomm", "nnom", "noom" };
+			List<String> Prenoms = new List<string>() { "lastname", "prenomm", "prenom" };
+			List<String> Dates = new List<string>() { "daate", "datenaissance", "dt" };
 			var dictionnaire = new Dictionary<string, List<string>>(){
 			{"Nom",Noms},
 			{"Prenom",Prenoms},

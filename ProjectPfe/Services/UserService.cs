@@ -29,7 +29,7 @@ namespace ProjectPfe.Services
              _UsersCollection.Find(x => x.Id == id).FirstOrDefault();
 
         public User GetByEmailPassword(string email, string password) =>
-             _UsersCollection.Find(x => x.Username == email && x.Password == password).FirstOrDefault();
+             _UsersCollection.Find(x => x.Username == email && x.Password == password && x.validate==true).FirstOrDefault();
 
         public void Create(User newUser) =>
              _UsersCollection.InsertOne(newUser);

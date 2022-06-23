@@ -7,7 +7,36 @@ namespace ProjectPfe.Services.libs
     public class ImportElement
 
     {
-        
+
+        public static void lowerElementsAttributes(XDocument xDocument)
+        {
+            var xelement = xDocument.Descendants("integration").Elements().ToList();
+            foreach (var element in xelement)
+            {
+                element.Name = element.Name.ToString().ToLower();
+            }
+
+            var xattributesOld = xDocument.Descendants("integration").Attributes().ToList();
+            List<XAttribute> attributesLowers = new List<XAttribute>();   
+           
+            foreach (var attribute in xattributesOld)
+            {
+                XAttribute xAttribute=new XAttribute(attribute.Name.ToString().ToLower(), attribute.Value);
+                attributesLowers.Add(xAttribute);
+
+            }
+            xDocument.Descendants("integration").Attributes().Remove();
+            xattributesOld.Clear();
+
+            foreach (var attribute in attributesLowers)
+            {
+                xattributesOld.Add(attribute);
+            }
+            xDocument.Descendants("integration").ElementAt(0).Add(xattributesOld);
+
+
+        }
+
         public static void AddTitreToIntegration(XElement coordinate ,Integration integration,TitreService
             titreService, SousTitreService soustitreService)
         {

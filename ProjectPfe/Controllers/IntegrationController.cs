@@ -82,7 +82,7 @@ namespace ProjectPfe.Controllers
 
 
             XDocument xDocument = XDocument.Load(sr);
-
+            ImportElement.lowerElementsAttributes(xDocument);
 
             foreach (var xdoc in xDocument.Descendants("integration"))
             {
