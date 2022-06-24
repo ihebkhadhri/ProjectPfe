@@ -68,14 +68,88 @@ namespace ProjectPfe.Controllers
         [Route("AddIntegration")]
         public String AddIntegration([FromForm] IFormFile file)
         {
-            List<Integration> integrations = new List<Integration>();
-
-
+            
             var objectIdFile = gridFsStockTemplate.UploadFileXml(file);
             Input input = new Input();
             input.IdChunks = objectIdFile.ToString();
             input.Filename = file.FileName;
             inputXmlService.Create(input);
+            return addintegrationcommunuse(objectIdFile);
+
+         
+        }
+
+
+
+
+
+
+       
+        
+
+
+        [HttpDelete(Name = "DeleteIntegration")]
+        [Route("DeleteIntegration/{id}")]
+        public String deleteIntegration(string id)
+        {
+            integrationService.Remove(id);
+            return "Deleted";
+        }
+
+
+        [HttpPut(Name = "GetIntegration")]
+        [Route("GetIntegration/{idIntegration}")]
+        public Integration GetIntegration(string idIntegration)
+        {
+            Integration integration = integrationService.Get(idIntegration);
+
+
+
+            return integration;
+
+        }
+
+
+        [HttpGet(Name = "GetFinalPdf")]
+        [Route("GetFinalPdf/{idIntegration}")]
+        public String GetFinalPdf(String idIntegration)
+        {
+
+            return gridFsStockTemplate.DownloadFileByName(idIntegration);
+
+        }
+
+        [HttpPut]
+        [Route("EcrireTemplate/{idTemplateChoisi}")]
+        public Integration EcrireTemplate(String idTemplateChoisi, Integration integration)
+        {
+            TemplateWord template = templateService.Get(idTemplateChoisi);
+
+
+            List<Integration> integrations = new List<Integration>();
+            integrations.Add(integration);
+            GenerateWord generateWord = new GenerateWord();
+            generateWord.GeneratWord(integrations, template, gridFsStockTemplate, integrationService);
+            return integration;
+        }
+
+        [HttpPost(Name = "AddIntegrationbyidxmlfile")]
+        [Route("AddIntegrationbyidxmlfile/{id}")]
+        public String AddIntegrationbyidxmlfile(string id)
+        {
+
+            var objectIdFile =new ObjectId( id);
+
+            return addintegrationcommunuse(objectIdFile);
+
+            
+
+        }
+
+
+#region privatefunction
+
+        private string addintegrationcommunuse(ObjectId objectIdFile) {
             var doc = gridFsStockTemplate.openfile(objectIdFile);
 
             StreamReader sr = new StreamReader(doc, Encoding.Default);
@@ -115,101 +189,19 @@ namespace ProjectPfe.Controllers
 
                 integrationService.Update(integration.Id, integration);
 
-                integrations.Add(integration);
+
                 GenerateXml generateXml = new GenerateXml();
-                generateXml.generate(integrations);
+                generateXml.generate(integration);
 
                 return integration.Id;
 
 
             }
-
             return null;
         }
 
+#endregion
 
-
-
-
-
-        [HttpPut(Name = "UpdateIntegration")]
-        [Route("UpdateIntegration")]
-        public List<Integration> UpdateIntegration()
-        {
-            XDocument coordinates = XDocument.Load(@"D:\testUpdate.xml");
-
-            List<Integration> integrations = new List<Integration>();
-
-            foreach (var coordinate in coordinates.Descendants("integration"))
-            {
-
-                Integration integration = integrationService.Get(coordinate.Attribute("id").Value);
-
-                integration.Nom = coordinate.Attribute("nom").Value;
-                integration.Prenom = coordinate.Element("prenom").Value;
-                integration.Nationalite = coordinate.Element("nationalite").Value;
-                integration.Age = (coordinate.Element("age").Value);
-
-                integrationService.Update(integration.Id, integration);
-                integrations.Add(integration);
-
-
-
-            }
-
-            GenerateXml generateXml = new GenerateXml();
-            generateXml.generate(integrations);
-
-            return integrations;
-        }
-
-
-        [HttpDelete(Name = "DeleteIntegration")]
-        [Route("DeleteIntegration/{id}")]
-        public String deleteIntegration(string id)
-        {
-            integrationService.Remove(id);
-            return "Deleted";
-        }
-
-
-        [HttpPut(Name = "GetIntegration")]
-        [Route("GetIntegration/{idIntegration}")]
-        public Integration GetIntegration(string idIntegration)
-        {
-            Integration integration = integrationService.Get(idIntegration);
-
-
-
-            return integration;
-
-        }
-
-
-        [HttpGet(Name = "GetFinalPdf")]
-        [Route("GetFinalPdf/{idIntegration}")]
-        public String GetFinalPdf(String idIntegration)
-        {
-
-            return gridFsStockTemplate.DownloadFileByName(idIntegration);
-
-        }
-
-        [HttpPut]
-        [Route("EcrireTemplate/{idTemplateChoisi}")]
-        public Integration EcrireTemplate( String idTemplateChoisi, Integration integration)
-        {
-            TemplateWord template = templateService.Get(idTemplateChoisi);
-
-           
-            List<Integration> integrations = new List<Integration>();
-            integrations.Add(integration);
-            GenerateWord generateWord = new GenerateWord();
-            generateWord.GeneratWord(integrations, template, gridFsStockTemplate, integrationService);
-            return integration;
-        }
-
-        
 
     }
 
