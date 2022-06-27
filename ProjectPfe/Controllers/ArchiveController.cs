@@ -144,5 +144,16 @@ namespace ProjectPfe.Controllers
         }
 
 
+        [HttpGet(Name = "getidinputfilefromintegration")]
+        [Route("getidinputfilefromintegration/{idintegration}/")]
+        public string getidinputfilefromintegration(string idintegration)
+        {
+            var integration = integrationService.Get(idintegration);
+            return integration.inputfileid;
+
+
+        }
+
+
     }
 }

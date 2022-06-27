@@ -6,7 +6,7 @@ namespace ProjectPfe.Services
 {
     public class GenerateXml
     {
-        public void generate(List<Integration> integrations)
+        public void generate(Integration integration)
         {
             //Decalre a new XMLDocument object
             XmlDocument doc = new XmlDocument();
@@ -23,8 +23,7 @@ namespace ProjectPfe.Services
             doc.AppendChild(elementRacine);
 
 
-            foreach (Integration integration in integrations)
-            {
+           
 
                 XmlElement elementintegration = doc.CreateElement(string.Empty, "Integration", string.Empty);
 
@@ -47,7 +46,7 @@ namespace ProjectPfe.Services
                 XmlText textNationalite = doc.CreateTextNode(integration.Nationalite);
                 affecter(elementintegration, elementNationalite, textNationalite);
 
-            }
+            
 
 
 

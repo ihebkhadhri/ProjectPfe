@@ -44,11 +44,14 @@ namespace JWTAuth.WebApi.Controllers
         }
         [HttpPost(Name = "Create")]
         [Route("Create")]
-        public ActionResult<User> Create(User user)
+        public Boolean Create(User user)
         {
-            user.validate = false;
+            if (user.UserRole == UserRole.Utilisateur)
+                user.validate = false;
+            else
+                user.validate = true;
             _context.Create(user);
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+            return true;
           
         }
         [HttpDelete(Name = "DeleteUser")]

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ConnexionMongo.Services;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using ProjectPfe.Models;
 using ProjectPfe.Services;
@@ -14,11 +15,13 @@ namespace ProjectPfe.Controllers
         private readonly TemplateWordService templateWordService;
         private readonly CategorieService categorieService;
         private readonly GridFsStockTemplate gridFsStockTemplate;
+        private readonly IntegrationService integrationService;
 
-        public TemplateController(TemplateWordService _templateWordService, CategorieService _categorieService, GridFsStockTemplate _gridFsStockTemplate) {
+        public TemplateController(IntegrationService _integrationService,TemplateWordService _templateWordService, CategorieService _categorieService, GridFsStockTemplate _gridFsStockTemplate) {
             templateWordService = _templateWordService;
             categorieService = _categorieService;
-            gridFsStockTemplate = _gridFsStockTemplate; 
+            gridFsStockTemplate = _gridFsStockTemplate;
+            integrationService = _integrationService;
         }
 
         [HttpGet(Name = "AllTemplatesByCategorie")]
@@ -100,6 +103,16 @@ namespace ProjectPfe.Controllers
              gridFsStockTemplate.removefile(new ObjectId(template.FileRtfId));
 
             templateWordService.Remove(template.Id);
+
+        }
+        [HttpGet(Name = "DownloadTemplateMappee")]
+        [Route("DownloadTemplateMappee/{idi}/")]
+        public string DownloadTemplateMappee(string idi)
+        {
+            var integration = integrationService.Get(idi);
+            return gridFsStockTemplate.findarchive(integration.rtfid);
+
+
 
         }
     }
