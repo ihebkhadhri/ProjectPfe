@@ -22,11 +22,24 @@ namespace ConnexionMongo.Models
         public string? pdfid { get; set; }
         public string? inputfileid { get; set; }
 
+        public EtatIntegration? etatIntegration { get; set; }
+        public StatutIntegration? statutIntegration { get; set; }
+
          public List<Titre>? Titres { get; set; }
         public List<Tableau>? Tableaux { get; set; }
         public List<Paragraphe>? Paragraphes { get; set; }
         public User? UserImport { get; set; }
         public TemplateWord? template { get; set; }
 
+    }
+
+    public  enum EtatIntegration
+    {
+        Etape1,Etape2,Etap3
+    }
+
+    public enum StatutIntegration
+    {
+        NonTermine, Termine
     }
 }
