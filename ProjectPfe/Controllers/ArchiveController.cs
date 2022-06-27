@@ -17,19 +17,19 @@ namespace ProjectPfe.Controllers
         {
             integrationService = _integrationService;
             gridFsStockTemplate = _gridFsStockTemplate;
-            
+
         }
 
         //back
-        
+
 
         [HttpGet(Name = "AllArchives")]
         [Route("AllArchives")]
         public List<Integration> AllArchives()
         {
-           
-            List<Integration>integrations=integrationService.Get();
-            
+
+            List<Integration> integrations = integrationService.Get();
+
             return integrations;
 
         }
@@ -39,14 +39,14 @@ namespace ProjectPfe.Controllers
         [Route("Deletearchive/{idintegration}/")]
         public void Deletearchive(string idintegration)
         {
-           var integration =integrationService.Get(idintegration);
-            gridFsStockTemplate.removeFile(integration.rtfid );
-            gridFsStockTemplate.removeFile(integration.pdfid );
-            gridFsStockTemplate.removeFile(integration.inputfileid );
+            var integration = integrationService.Get(idintegration);
+            gridFsStockTemplate.removeFile(integration.rtfid);
+            gridFsStockTemplate.removeFile(integration.pdfid);
+            gridFsStockTemplate.removeFile(integration.inputfileid);
 
             integrationService.Remove(idintegration);
-            
-           
+
+
 
         }
 
@@ -55,8 +55,8 @@ namespace ProjectPfe.Controllers
         public string Downloadarchive(string idintegration)
         {
             var integration = integrationService.Get(idintegration);
-           return gridFsStockTemplate.findarchive(integration.pdfid);
-            
+            return gridFsStockTemplate.findarchive(integration.pdfid);
+
 
 
         }
@@ -86,14 +86,22 @@ namespace ProjectPfe.Controllers
 
 
         [HttpGet(Name = "MesArchivesPdf")]
-        [Route("MesArchivesPdf")]
-        public List<String> MesArchivesPdf()
+        [Route("MesArchivesPdf/{step}")]
+        public List<String> MesArchivesPdf(int step)
         {
             List<String> allarchives = new List<String>();
-            List<Integration> integrations = integrationService.Getbyuser(UserConnected.user.Id);
+            List<Integration> integrations = new List<Integration>();
+            if (step == 2)
+            {
+                integrations=integrationService.GetArchiveStep2ByUser();
+            }
+            else
+            {
+                integrations= integrationService.Getbyuser(UserConnected.user.Id);
+            }
             foreach (var t in integrations)
             {
-                allarchives.Add( gridFsStockTemplate.DownloadFile(t.pdfid));
+                allarchives.Add(gridFsStockTemplate.DownloadFile(t.pdfid));
             }
 
             return allarchives;
@@ -101,12 +109,20 @@ namespace ProjectPfe.Controllers
         }
 
         [HttpGet(Name = "MesArchivesPdfFiltrer")]
-        [Route("MesArchivesPdfFiltrer/{filtresearch?}")]
-        public List<String> MesArchivesPdfFiltrer(String filtresearch = "")
+        [Route("MesArchivesPdfFiltrer/{filtresearch}/{step}")]
+        public List<String> MesArchivesPdfFiltrer(String filtresearch, int step)
         {
             List<String> allarchives = new List<String>();
-            List<Integration> integrations = integrationService.Getbyuser(UserConnected.user.Id);
-            String _filtresearch=filtresearch.ToLower();
+            List<Integration> integrations = new List<Integration>();
+            if (step == 2)
+            {
+                integrations= integrationService.GetArchiveStep2ByUser();
+            }
+            else
+            {
+                integrations= integrationService.Getbyuser(UserConnected.user.Id);
+            }
+            String _filtresearch = filtresearch.ToLower();
 
             if (_filtresearch == "")
             {
@@ -129,14 +145,14 @@ namespace ProjectPfe.Controllers
                 var sousparagraphe = t.Paragraphes.Where(tr => tr.Sous_paragraphe.Where(st => st.libelle.ToLower().Contains(_filtresearch)).ToList().Count > 0).ToList();
 
 
-                if (soustitres.Count>0 || sousparagraphe.Count>0 || titres.Count > 0 || paragrapges.Count > 0 || t.Adresse.ToLower().Contains(_filtresearch) || t.Age.ToLower().Contains(_filtresearch) || t.DateNaissance.ToLower().Contains(_filtresearch) || t.Nationalite.ToLower().Contains(_filtresearch) || t.Nom.ToLower().Contains(_filtresearch) || t.Prenom.ToLower().Contains(_filtresearch) || t.PrixUnitaire.ToLower().Contains(_filtresearch) || t.Sex.ToLower().Contains(_filtresearch) )
+                if (soustitres.Count > 0 || sousparagraphe.Count > 0 || titres.Count > 0 || paragrapges.Count > 0 || t.Adresse.ToLower().Contains(_filtresearch) || t.Age.ToLower().Contains(_filtresearch) || t.DateNaissance.ToLower().Contains(_filtresearch) || t.Nationalite.ToLower().Contains(_filtresearch) || t.Nom.ToLower().Contains(_filtresearch) || t.Prenom.ToLower().Contains(_filtresearch) || t.PrixUnitaire.ToLower().Contains(_filtresearch) || t.Sex.ToLower().Contains(_filtresearch))
                 {
-                    
-                    
-                        allarchives.Add(gridFsStockTemplate.DownloadFile(t.pdfid));
-                    
+
+
+                    allarchives.Add(gridFsStockTemplate.DownloadFile(t.pdfid));
+
                 }
-                
+
             }
 
             return allarchives;
@@ -151,6 +167,18 @@ namespace ProjectPfe.Controllers
             var integration = integrationService.Get(idintegration);
             return integration.inputfileid;
 
+
+        }
+
+        //front 
+        [HttpGet(Name = "AllArchivesStep2")]
+        [Route("AllArchivesStep2")]
+        public List<Integration> AllArchivesStep2()
+        {
+
+            List<Integration> integrations = integrationService.GetArchiveStep2ByUser();
+
+            return integrations;
 
         }
 
