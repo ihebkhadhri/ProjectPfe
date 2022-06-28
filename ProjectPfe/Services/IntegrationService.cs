@@ -43,7 +43,11 @@ namespace ConnexionMongo.Services
        
 
         public List<Integration> GetArchiveStep2ByUser() =>
-             _IntegrationsCollection.Find(x=>x.UserImport.Id==UserConnected.user.Id && x.etatIntegration==EtatIntegration.Etape2 ).ToList();
+             _IntegrationsCollection.Find(x=>x.UserImport.Id==UserConnected.user.Id && x.etatIntegration !=null && x.etatIntegration==EtatIntegration.Etape2 ).ToList();
+
+
+        public List<Integration> GetArchiveStep3GroupCorilus() =>
+             _IntegrationsCollection.Find(x => x.UserImport.UserRole  == UserRole.Utilisateur && x.etatIntegration != null && x.etatIntegration == EtatIntegration.Etap3).ToList();
 
         public List<Integration> GetIntegrationStep1() =>
            _IntegrationsCollection.Find(x => x.UserImport.UserRole==UserRole.Particulier && x.etatIntegration!=null && x.etatIntegration == EtatIntegration.Etape1).ToList();
