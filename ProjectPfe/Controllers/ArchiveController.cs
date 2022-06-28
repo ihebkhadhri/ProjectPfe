@@ -84,6 +84,17 @@ namespace ProjectPfe.Controllers
 
         }
 
+        [HttpGet(Name = "AllArchivesbyuserstep1")]
+        [Route("AllArchivesbyuserstep1")]
+        public List<Integration> AllArchivesbyuserstep1()
+        {
+
+            List<Integration> integrations = integrationService.Getarchivebystep1byuser(UserConnected.user.Id);
+
+            return integrations;
+
+        }
+
 
         [HttpGet(Name = "MesArchivesPdf")]
         [Route("MesArchivesPdf")]
