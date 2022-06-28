@@ -40,6 +40,9 @@ namespace ConnexionMongo.Services
         public List<Integration> Getbyuser(string userid) => 
              _IntegrationsCollection.Find(x => x.UserImport.Id == userid && x.pdfid!=null).ToList();
 
+        public List<Integration> Getarchivebystep1byuser(string userid) =>
+             _IntegrationsCollection.Find(x => x.UserImport.Id == userid && x.etatIntegration== EtatIntegration.Etape1).ToList();
+
        
 
         public List<Integration> GetArchiveStep2ByUser() =>
