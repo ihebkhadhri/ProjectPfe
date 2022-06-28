@@ -189,7 +189,7 @@ namespace ProjectPfe.Controllers
                 integration.UserImport = UserConnected.user;
                 integration.etatIntegration = EtatIntegration.Etape1;
                 integration.statutIntegration = StatutIntegration.NonTermine;
-                
+                integration.categorie=categorie;
                 integrationService.Create(integration);
 
                 ImportElement.AddTitreToIntegration(xdoc, integration, titreService, soustitreservice);
