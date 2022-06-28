@@ -204,8 +204,16 @@ namespace ProjectPfe.Controllers
             }
             return null;
         }
+        [HttpGet(Name = "IntegrationStep1")]
+        [Route("IntegrationStep1")]
+        public List<Integration> IntegrationStep1()
+        {
+            List<Integration> integrations = integrationService.GetIntegrationStep1();
+            return integrations;
 
-#endregion
+        }
+
+        #endregion
 
 
     }
