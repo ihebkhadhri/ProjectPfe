@@ -50,7 +50,7 @@ namespace ConnexionMongo.Services
              _IntegrationsCollection.Find(x => x.UserImport.UserRole  == UserRole.Utilisateur && x.etatIntegration != null && x.etatIntegration == EtatIntegration.Etap3).ToList();
 
         public List<Integration> GetIntegrationStep1() =>
-           _IntegrationsCollection.Find(x => x.UserImport.UserRole==UserRole.Particulier && x.etatIntegration!=null && x.etatIntegration == EtatIntegration.Etape1).ToList();
+           _IntegrationsCollection.Find(x => x.UserImport.UserRole==UserRole.Utilisateur && x.etatIntegration!=null && x.etatIntegration == EtatIntegration.Etape1).ToList();
 
 
     }
