@@ -21,7 +21,7 @@ namespace ConnexionMongo.Models
         public string? rtfid { get; set; }
         public string? pdfid { get; set; }
         public string? inputfileid { get; set; }
-
+        public Categorie categorie { get; set; }
         public EtatIntegration? etatIntegration { get; set; }
         public StatutIntegration? statutIntegration { get; set; }
 
