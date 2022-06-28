@@ -193,6 +193,16 @@ namespace ProjectPfe.Controllers
             return integrations;
 
         }
+        [HttpGet(Name = "AllArchivesStep3")]
+        [Route("AllArchivesStep3")]
+        public List<Integration> AllArchivesStep3()
+        {
+
+            List<Integration> integrations = integrationService.GetArchiveStep3ByUser();
+
+            return integrations;
+
+        }
 
 
     }
