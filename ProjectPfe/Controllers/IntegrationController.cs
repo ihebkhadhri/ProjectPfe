@@ -150,6 +150,9 @@ namespace ProjectPfe.Controllers
 #region privatefunction
 
         private string addintegrationcommunuse(ObjectId objectIdFile) {
+
+          
+
             var doc = gridFsStockTemplate.openfile(objectIdFile);
 
             StreamReader sr = new StreamReader(doc, Encoding.Default);
@@ -179,6 +182,8 @@ namespace ProjectPfe.Controllers
                 integration.Adresse = DictionnaireIntegration.getAdresse(xdoc);
                 integration.Created = DateTime.Now;
                 integration.UserImport = UserConnected.user;
+                integration.etatIntegration = EtatIntegration.Etape1;
+                integration.statutIntegration = StatutIntegration.NonTermine;
                 integrationService.Create(integration);
 
                 ImportElement.AddTitreToIntegration(xdoc, integration, titreService, soustitreservice);
