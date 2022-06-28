@@ -21,6 +21,7 @@ namespace ProjectPfe.Controllers
 
 
         private IntegrationService integrationService;
+        private CategorieService categorieService;
 
         private readonly TitreService titreService;
         private readonly SousTitreService soustitreservice;
@@ -37,7 +38,7 @@ namespace ProjectPfe.Controllers
 
 
 
-        public IntegrationController(InputXmlService _inputXmlService, GridFsStockTemplate _gridFsStockTemplate, TemplateWordService _templateService, IntegrationService _integrationService, TitreService _titreService, SousTitreService _sousTitreService, ParagrapheService _paragrapheService, SousParagrapheService _sousParagrapheService, TableauService _tableauService, LigneService _ligneService, ColonneService _colonneService)
+        public IntegrationController(CategorieService _categorieService, InputXmlService _inputXmlService, GridFsStockTemplate _gridFsStockTemplate, TemplateWordService _templateService, IntegrationService _integrationService, TitreService _titreService, SousTitreService _sousTitreService, ParagrapheService _paragrapheService, SousParagrapheService _sousParagrapheService, TableauService _tableauService, LigneService _ligneService, ColonneService _colonneService)
         {
             integrationService = _integrationService;
             gridFsStockTemplate = _gridFsStockTemplate;
@@ -47,6 +48,7 @@ namespace ProjectPfe.Controllers
             tableauService = _tableauService;
             ligneService = _ligneService;
             colonneService = _colonneService;
+            categorieService = _categorieService;
 
             templateService = _templateService;
             soustitreservice = _sousTitreService;
@@ -65,8 +67,8 @@ namespace ProjectPfe.Controllers
 
 
         [HttpPost(Name = "AddIntegration")]
-        [Route("AddIntegration")]
-        public String AddIntegration([FromForm] IFormFile file)
+        [Route("AddIntegration/{idcategorie}")]
+        public String AddIntegration([FromForm] IFormFile file, string idcategorie)
         {
             
             var objectIdFile = gridFsStockTemplate.UploadFileXml(file);
@@ -74,9 +76,11 @@ namespace ProjectPfe.Controllers
             input.IdChunks = objectIdFile.ToString();
             input.Filename = file.FileName;
             inputXmlService.Create(input);
-            return addintegrationcommunuse(objectIdFile);
+            Categorie c = categorieService.Get(idcategorie);
 
-         
+            return addintegrationcommunuse(objectIdFile, c);
+
+
         }
 
 
@@ -134,13 +138,14 @@ namespace ProjectPfe.Controllers
         }
 
         [HttpPost(Name = "AddIntegrationbyidxmlfile")]
-        [Route("AddIntegrationbyidxmlfile/{id}")]
-        public String AddIntegrationbyidxmlfile(string id)
+        [Route("AddIntegrationbyidxmlfile/{id}/{idcategorie}")]
+        public String AddIntegrationbyidxmlfile(string id,string idcategorie )
         {
 
             var objectIdFile =new ObjectId( id);
+            Categorie c = categorieService.Get(idcategorie);
 
-            return addintegrationcommunuse(objectIdFile);
+            return addintegrationcommunuse(objectIdFile,c);
 
             
 
@@ -149,7 +154,7 @@ namespace ProjectPfe.Controllers
 
 #region privatefunction
 
-        private string addintegrationcommunuse(ObjectId objectIdFile) {
+        private string addintegrationcommunuse(ObjectId objectIdFile, Categorie categorie) {
 
           
 
@@ -184,6 +189,7 @@ namespace ProjectPfe.Controllers
                 integration.UserImport = UserConnected.user;
                 integration.etatIntegration = EtatIntegration.Etape1;
                 integration.statutIntegration = StatutIntegration.NonTermine;
+                
                 integrationService.Create(integration);
 
                 ImportElement.AddTitreToIntegration(xdoc, integration, titreService, soustitreservice);
