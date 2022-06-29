@@ -139,6 +139,7 @@ namespace ProjectPfe.Controllers
             if (integration.etatIntegration == EtatIntegration.Etap3)
             {
                 integration.etatIntegration = EtatIntegration.Etape2;
+                integration.statutIntegration = StatutIntegration.NonTermine;
             }
             else if (integration.etatIntegration == EtatIntegration.Etape2)
             {
