@@ -113,6 +113,24 @@ namespace ProjectPfe.Controllers
 
         }
 
+        [HttpGet(Name = "incrementeetat")]
+        [Route("incrementeetat/{idIntegration}")]
+        public Integration incrementeetat(string idIntegration)
+        {
+            Integration integration = integrationService.Get(idIntegration);
+            if (integration.etatIntegration == EtatIntegration.Etape1)
+            {
+                integration.etatIntegration = EtatIntegration.Etape2;
+            } else if(integration.etatIntegration == EtatIntegration.Etape2)
+            {
+                integration.etatIntegration = EtatIntegration.Etap3;
+            }
+            integrationService.Update(idIntegration, integration);
+
+            return integration;
+
+        }
+
 
         [HttpGet(Name = "GetFinalPdf")]
         [Route("GetFinalPdf/{idIntegration}")]
