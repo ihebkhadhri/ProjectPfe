@@ -37,7 +37,7 @@ namespace ConnexionMongo.Services
         public void  Remove(string id) =>
              _IntegrationsCollection.DeleteOne(x => x.Id == id);
 
-        public List<Integration> Getbyuser(string userid) =>
+        public List<Integration> Getbyuser(string userid) => 
              _IntegrationsCollection.Find(x => x.UserImport.Id == userid && x.pdfid!=null).ToList();
 
         public List<Integration> Getarchivebystep1byuser(string userid) =>
@@ -55,7 +55,8 @@ namespace ConnexionMongo.Services
         public List<Integration> GetIntegrationStep1() =>
            _IntegrationsCollection.Find(x => x.UserImport.UserRole==UserRole.Utilisateur && x.etatIntegration!=null && x.etatIntegration == EtatIntegration.Etape1).ToList();
 
-
+        public List<Integration> GetArchiveStep3ByUser() =>
+           _IntegrationsCollection.Find(x => x.UserImport.Id == UserConnected.user.Id && x.etatIntegration != null && x.etatIntegration == EtatIntegration.Etap3).ToList();
     }
 }
 
