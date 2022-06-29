@@ -67,8 +67,8 @@ namespace ProjectPfe.Controllers
 
 
         [HttpPost(Name = "AddIntegration")]
-        [Route("AddIntegration/{idcategorie}")]
-        public String AddIntegration([FromForm] IFormFile file, string idcategorie)
+        [Route("AddIntegration/{idcategorie}/{nompdf}")]
+        public String AddIntegration([FromForm] IFormFile file, string idcategorie, string nompdf)
         {
             
             var objectIdFile = gridFsStockTemplate.UploadFileXml(file);
@@ -78,7 +78,7 @@ namespace ProjectPfe.Controllers
             inputXmlService.Create(input);
             Categorie c = categorieService.Get(idcategorie);
 
-            return addintegrationcommunuse(objectIdFile, c);
+            return addintegrationcommunuse(objectIdFile, c, nompdf);
 
 
         }
@@ -132,6 +132,25 @@ namespace ProjectPfe.Controllers
 
         }
 
+        [HttpGet(Name = "decrementetat")]
+        [Route("decrementetat/{idIntegration}")]
+        public Integration decrementetat(string idIntegration)
+        {
+            Integration integration = integrationService.Get(idIntegration);
+            if (integration.etatIntegration == EtatIntegration.Etap3)
+            {
+                integration.etatIntegration = EtatIntegration.Etape2;
+            }
+            else if (integration.etatIntegration == EtatIntegration.Etape2)
+            {
+                integration.etatIntegration = EtatIntegration.Etape1;
+            }
+            integrationService.Update(idIntegration, integration);
+
+            return integration;
+
+        }
+
 
         [HttpGet(Name = "GetFinalPdf")]
         [Route("GetFinalPdf/{idIntegration}")]
@@ -157,14 +176,14 @@ namespace ProjectPfe.Controllers
         }
 
         [HttpPost(Name = "AddIntegrationbyidxmlfile")]
-        [Route("AddIntegrationbyidxmlfile/{id}/{idcategorie}")]
-        public String AddIntegrationbyidxmlfile(string id,string idcategorie )
+        [Route("AddIntegrationbyidxmlfile/{id}/{idcategorie}/{nompdf}")]
+        public String AddIntegrationbyidxmlfile(string id,string idcategorie, string nompdf )
         {
 
             var objectIdFile =new ObjectId( id);
             Categorie c = categorieService.Get(idcategorie);
 
-            return addintegrationcommunuse(objectIdFile,c);
+            return addintegrationcommunuse(objectIdFile,c, nompdf);
 
             
 
@@ -173,7 +192,7 @@ namespace ProjectPfe.Controllers
 
 #region privatefunction
 
-        private string addintegrationcommunuse(ObjectId objectIdFile, Categorie categorie) {
+        private string addintegrationcommunuse(ObjectId objectIdFile, Categorie categorie, string nompdf) {
 
           
 
@@ -209,6 +228,7 @@ namespace ProjectPfe.Controllers
                 integration.etatIntegration = EtatIntegration.Etape1;
                 integration.statutIntegration = StatutIntegration.NonTermine;
                 integration.categorie=categorie;
+                integration.fileName = nompdf;
                 integrationService.Create(integration);
 
                 ImportElement.AddTitreToIntegration(xdoc, integration, titreService, soustitreservice);

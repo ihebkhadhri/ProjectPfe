@@ -25,6 +25,8 @@ namespace ConnexionMongo.Models
         public EtatIntegration? etatIntegration { get; set; }
         public StatutIntegration? statutIntegration { get; set; }
 
+        public String? fileName { get; set; }
+
          public List<Titre>? Titres { get; set; }
         public List<Tableau>? Tableaux { get; set; }
         public List<Paragraphe>? Paragraphes { get; set; }
